@@ -1,0 +1,85 @@
+lab_network:
+  name: IaC
+  id: 1
+  location: "US East"
+  control_modules:
+    - name: Clio
+      id: 2
+      status: "available"
+      endpoints:
+        - name: inventory_manager
+          id: 3
+          type: "inventory_manager"
+          status: "available"
+      equipment:
+        - name: valve_1
+          id: 4
+          type: "valve"
+          connection_type: "serial"
+          com_port: 4
+          status: "available"
+        - name: valve_end
+          id: 5
+          type: "valve"
+          connection_type: "serial"
+          com_port: 5
+          status: "available"
+        - name: valve_2
+          id: 6
+          type: "valve"
+          connection_type: "serial"
+          com_port: 6
+          status: "available"
+        - name: viscometer
+          id: 7
+          type: "viscometer"
+          connection_type: "serial"
+          com_port: 7
+          status: "available"
+        - name: PalmSens4
+          id: 8
+          type: "potentiostat"
+          connection_type: "serial"
+          com_port: 8
+          status: "available"
+        - name: balance
+          id: 9
+          type: "balance"
+          connection_type: "serial"
+          com_port: 9
+          status: "available"
+        - name: relay_24V
+          id: 10
+          type: "relay"
+          connection_type: "hid"
+          address: XFw/XEhJRCNWSURfMTZDMCZQSURfMDVERiM4JjIwZDg3NDJmJjAmMDAwMCN7NGQxZTU1YjItZjE2Zi0xMWNmLTg4Y2ItMDAxMTExMDAwMDMwfQ==
+          status: "available"
+        - name: relay_12V
+          id: 11
+          type: "relay"
+          connection_type: "hid"
+          address: XFw/XEhJRCNWSURfMTZDMCZQSURfMDVERiM4JmJlNDA3NDAmMCYwMDAwI3s0ZDFlNTViMi1mMTZmLTExY2YtODhjYi0wMDExMTEwMDAwMzB9
+          status: "available"
+        - name: pump_1
+          id: 12
+          type: "pump"
+          connection_type: "serial"
+          com_port: 12
+          status: "available"
+        - name: thermometer
+          id: 13
+          type: "thermometer"
+          connection_type: "hid"
+          address: XFw/XEhJRCNWSURfNDY0RCZQSURfMDQwMiZNSV8wMSM5JmIyZDVmNjcmMCYwMDAwI3s0ZDFlNTViMi1mMTZmLTExY2YtODhjYi0wMDExMTEwMDAwMzB9
+          status: "available"
+        - name: pump_2
+          id: 14
+          type: "pump"
+          connection_type: "serial"
+          com_port: 14
+          status: "available"
+  vault:
+    name: database
+    id: 15
+    status: "available"
+    vault_ids: [7, 8, 9, 13]
