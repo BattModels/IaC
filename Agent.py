@@ -211,8 +211,6 @@ class Agent:
     # Azure OpenAI configuration
     openai.api_type = "azure" 
     openai.api_version = "2024-02-15-preview"
-    os.environ["AZURE_OPENAI_ENDPOINT"] = "https://fuelcell-management.openai.azure.com/" 
-    os.environ["AZURE_OPENAI_API_KEY"] = "SI14urth4l29NXV1BIYWU9thScwaz1CGPB5AsfxhxuFZGFlfPUOlJQQJ99BHACYeBjFXJ3w3AAABACOG9nzD" 
     log_dir = os.path.join(script_dir, 'Conversation history')
 
     def __init__(self):
