@@ -1,0 +1,225 @@
+resources:
+
+  # ======================================================
+  # Lab network (top-level resource)
+  # ======================================================
+  lab_network:
+    type: lab_network
+    id: 1
+    name: "IaC"
+    location: "US East"
+    control_modules: ["clio_1", "clio_2"]
+
+
+  # ======================================================
+  # CONTROL MODULE 1
+  # ======================================================
+  clio_1:
+    type: control_module
+    id: 2
+    status: available
+    endpoints: ["inventory_manager_1"]
+    equipment:
+      - valve_1
+      - valve_end_1
+      - valve_2
+      - viscometer_1
+      - palmsens4_1
+      - balance_1
+      - relay_24V_1
+      - relay_12V_1
+      - pump_1a
+      - thermometer_1
+      - pump_2a
+
+
+  # Endpoints for Clio 1
+  inventory_manager_1:
+    type: inventory_manager
+    id: 3
+    status: available
+
+
+  # Equipment for Clio 1
+  valve_1:
+    type: valve
+    id: 4
+    connection_type: serial
+    identifier: 4
+    status: available
+
+  valve_end_1:
+    type: valve
+    id: 5
+    connection_type: serial
+    identifier: 5
+    status: available
+
+  valve_2:
+    type: valve
+    id: 6
+    connection_type: serial
+    identifier: 6
+    status: available
+
+  viscometer_1:
+    type: viscometer
+    id: 7
+    connection_type: serial
+    identifier: 7
+    status: available
+
+  palmsens4_1:
+    type: potentiostat
+    id: 8
+    connection_type: serial
+    identifier: 8
+    status: available
+
+  balance_1:
+    type: balance
+    id: 9
+    connection_type: serial
+    identifier: 9
+    status: available
+
+  relay_24V_1:
+    type: relay
+    id: 10
+    connection_type: hid
+    identifier: XFw/XEhJRCNWSURfMTZDMCZQSURfMDVERiM4JjIwZDg3NDJmJjAmMDAwMCN7NGQxZTU1YjItZjE2Zi0xMWNmLTg4Y2ItMDAxMTExMDAwMDMwfQ==
+    status: available
+
+  relay_12V_1:
+    type: relay
+    id: 11
+    connection_type: hid
+    identifier: XFw/XEhJRCNWSURfMTZDMCZQSURfMDVERiM4JmJlNDA3NDAmMCYwMDAwI3s0ZDFlNTViMi1mMTZmLTExY2YtODhjYi0wMDExMTEwMDAwMzB9
+    status: available
+
+  pump_1a:
+    type: pump
+    id: 12
+    connection_type: serial
+    identifier: 12
+    status: available
+
+  thermometer_1:
+    type: thermometer
+    id: 13
+    connection_type: hid
+    identifier: XFw/XEhJRCNWSURfNDY0RCZQSURfMDQwMiZNSV8wMSM5JmIyZDVmNjcmMCYwMDAwI3s0ZDFlNTViMi1mMTZmLTExY2YtODhjYi0wMDExMTEwMDAwMzB9
+    status: available
+
+  pump_2a:
+    type: pump
+    id: 14
+    connection_type: serial
+    identifier: 14
+    status: available
+
+
+  # ======================================================
+  # CONTROL MODULE 2 (duplicate but separate instances)
+  # ======================================================
+  clio_2:
+    type: control_module
+    id: 16
+    status: available
+    endpoints: ["inventory_manager_2"]
+    equipment:
+      - valve_1b
+      - valve_end_2
+      - valve_2b
+      - viscometer_2
+      - palmsens4_2
+      - balance_2
+      - relay_24V_2
+      - relay_12V_2
+      - pump_1b
+      - thermometer_2
+      - pump_2b
+
+
+  inventory_manager_2:
+    type: inventory_manager
+    id: 17
+    status: available
+
+
+  valve_1b:
+    type: valve
+    id: 18
+    connection_type: serial
+    identifier: 4
+    status: available
+
+  valve_end_2:
+    type: valve
+    id: 19
+    connection_type: serial
+    identifier: 5
+    status: available
+
+  valve_2b:
+    type: valve
+    id: 20
+    connection_type: serial
+    identifier: 6
+    status: available
+
+  viscometer_2:
+    type: viscometer
+    id: 21
+    connection_type: serial
+    identifier: 7
+    status: available
+
+  palmsens4_2:
+    type: potentiostat
+    id: 22
+    connection_type: serial
+    identifier: 8
+    status: available
+
+  balance_2:
+    type: balance
+    id: 23
+    connection_type: serial
+    identifier: 9
+    status: available
+
+  relay_24V_2:
+    type: relay
+    id: 24
+    connection_type: hid
+    identifier: XFw/XEhJRCNWSURfMTZDMCZQSURfMDVERiM4JjIwZDg3NDJmJjAmMDAwMCN7NGQxZTU1YjItZjE2Zi0xMWNmLTg4Y2ItMDAxMTExMDAwMDMwfQ==
+    status: available
+
+  relay_12V_2:
+    type: relay
+    id: 25
+    connection_type: hid
+    identifier: XFw/XEhJRCNWSURfMTZDMCZQSURfMDVERiM4JmJlNDA3NDAmMCYwMDAwI3s0ZDFlNTViMi1mMTZmLTExY2YtODhjYi0wMDExMTEwMDAwMzB9
+    status: available
+
+  pump_1b:
+    type: pump
+    id: 26
+    connection_type: serial
+    identifier: 12
+    status: available
+
+  thermometer_2:
+    type: thermometer
+    id: 27
+    connection_type: hid
+    identifier: XFw/XEhJRCNWSURfNDY0RCZQSURfMDQwMiZNSV8wMSM5JmIyZDVmNjcmMCYwMDAwI3s0ZDFlNTViMi1mMTZmLTExY2YtODhjYi0wMDExMTEwMDAwMzB9
+    status: available
+
+  pump_2b:
+    type: pump
+    id: 28
+    connection_type: serial
+    identifier: 14
+    status: available
