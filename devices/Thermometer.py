@@ -98,9 +98,9 @@ class Thermometer(Instrument):
             self.log(f"Error in measuring temperature.", level=logging.ERROR)
             raise
 
-    def update(self):
+    def read(self):
         """Perform temperature measurement."""
-
+        result = super().read()
         try:
             if not self._is_logging():
                 self.log("Thermometer is not logging", level=logging.ERROR)
@@ -118,6 +118,7 @@ class Thermometer(Instrument):
 
             result = self._read_record_by_num(num_records - 2) + self.ADJUSTMENT
             self.log(f"Measured temperature: {result}")
+            result.extend({'temperature':result})
             return result
 
         except Exception as e:

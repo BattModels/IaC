@@ -10,7 +10,7 @@ from core.Instrument import Instrument, ConnectionType
 from core.Resource import Resource
 from Utils import RETRY_LIMIT, sanitize_filename, save_dict_to_json
 
-from pspython import pspyinstruments, pspymethods, pspyfiles
+from devices.pspython import pspyinstruments, pspymethods, pspyfiles
 
 
 SIGNIFICANT_DIGITS = 8

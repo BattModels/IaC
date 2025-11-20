@@ -48,14 +48,14 @@ class Balance(Instrument):
 
     # ---------- Measurement Action ----------
 
-    def update(self, period=0.1):
+    def read(self, period=0.1):
         """
         Perform a mass measurement and wait until the reading stabilizes.
         Returns:
             float: The stabilized mass measurement.
         """
         if not self.serial:
-            self.connect()
+            self.create()
 
         # Wait briefly before measurement (allow balance to initialize)
         time.sleep(5)
@@ -83,7 +83,8 @@ class Balance(Instrument):
 
                 if stable_count >= self.stable_count:
                     self.log(f"Measurement stabilized: {measurement}")
-                    return measurement
+                    result = super().read()
+                    return result.extend({'Mass':measurement})
 
                 time.sleep(period)
 

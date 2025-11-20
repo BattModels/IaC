@@ -69,11 +69,10 @@ class Instrument(Resource, ABC):
     def read(self):
         """Return device status, including hardware polling if needed."""
         return {'status':self.status}
-
-    @abstractmethod
+    
     def update(self, *args, **kwargs):
         """Perform device operation (move valve, set flow rate, etc)."""
-        ...
+        return
 
     @abstractmethod
     def delete(self):

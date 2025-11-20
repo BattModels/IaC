@@ -73,6 +73,10 @@ class Valve(Instrument):
             self.status = Resource.Status.ERROR
             self.log("Failed to move valve after maximum retries.", level=logging.ERROR)
             raise BufferError("Error occurred while moving valve after retries.")
+        
+    def read(self):
+        result = super().read()
+        return result.extend({'position':self._get_current_position()})
 
     # --------------------------
     # Internal Helper Methods

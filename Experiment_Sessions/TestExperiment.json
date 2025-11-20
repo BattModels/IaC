@@ -1,0 +1,142 @@
+{
+  "experiment_id": "exp_001",
+  "description": "Prepare electrolyte and measure viscosity + density.",
+
+  "resources": [
+    "pump_1a",
+    "pump_2a",
+    "relay_12V_1",
+    "viscometer_1",
+    "balance_1"
+  ],
+
+  "tasks": [
+
+    {
+      "task_id": "create_pump_1a",
+      "resource": "pump_1a",
+      "action": "create",
+      "args": [],
+      "kwargs": {},
+      "depends_on": []
+    },
+    {
+      "task_id": "create_pump_2a",
+      "resource": "pump_2a",
+      "action": "create",
+      "args": [],
+      "kwargs": {},
+      "depends_on": []
+    },
+    {
+      "task_id": "create_relay_12V_1",
+      "resource": "relay_12V_1",
+      "action": "create",
+      "args": [],
+      "kwargs": {},
+      "depends_on": []
+    },
+    {
+      "task_id": "create_viscometer_1",
+      "resource": "viscometer_1",
+      "action": "create",
+      "args": [],
+      "kwargs": {},
+      "depends_on": []
+    },
+    {
+      "task_id": "create_balance_1",
+      "resource": "balance_1",
+      "action": "create",
+      "args": [],
+      "kwargs": {},
+      "depends_on": []
+    },
+
+    {
+      "task_id": "t1_draw_ec",
+      "resource": "pump_1a",
+      "action": "update",
+      "args": [5],
+      "kwargs": {},
+      "depends_on": ["create_pump_1a"]
+    },
+
+    {
+      "task_id": "t2_draw_dmc",
+      "resource": "pump_1a",
+      "action": "update",
+      "args": [5],
+      "kwargs": {},
+      "depends_on": ["t1_draw_ec"]
+    },
+
+    {
+      "task_id": "t3_mix",
+      "resource": "relay_12V_1",
+      "action": "update",
+      "args": [30],
+      "kwargs": {},
+      "depends_on": ["t2_draw_dmc"]
+    },
+
+    {
+      "task_id": "t4_measure_viscosity",
+      "resource": "viscometer_1",
+      "action": "read",
+      "args": [],
+      "kwargs": {},
+      "depends_on": ["t3_mix"]
+    },
+
+    {
+      "task_id": "t5_measure_density",
+      "resource": "balance_1",
+      "action": "read",
+      "args": [],
+      "kwargs": {},
+      "depends_on": ["t3_mix"]
+    },
+
+    {
+      "task_id": "delete_pump_1a",
+      "resource": "pump_1a",
+      "action": "delete",
+      "args": [],
+      "kwargs": {},
+      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
+    },
+    {
+      "task_id": "delete_pump_2a",
+      "resource": "pump_2a",
+      "action": "delete",
+      "args": [],
+      "kwargs": {},
+      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
+    },
+    {
+      "task_id": "delete_relay_12V_1",
+      "resource": "relay_12V_1",
+      "action": "delete",
+      "args": [],
+      "kwargs": {},
+      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
+    },
+    {
+      "task_id": "delete_viscometer_1",
+      "resource": "viscometer_1",
+      "action": "delete",
+      "args": [],
+      "kwargs": {},
+      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
+    },
+    {
+      "task_id": "delete_balance_1",
+      "resource": "balance_1",
+      "action": "delete",
+      "args": [],
+      "kwargs": {},
+      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
+    }
+  ]
+}
