@@ -19,8 +19,8 @@ class Thermometer(Instrument):
     ADJUSTMENT = -6.1
     
 
-    def __init__(self, name: str, id, identifier: bytes, status=Resource.Status.AVAILABLE):
-        super().__init__(name=name, id=id, connection_type=ConnectionType.HID, identifier=identifier, status=status)
+    def __init__(self, name: str, id, identifier: bytes, type_name):
+        super().__init__(name=name, id=id, connection_type=ConnectionType.HID, type_name=type_name, identifier=identifier)
         self.device_path = identifier  # HID path string
         self.device = None
 

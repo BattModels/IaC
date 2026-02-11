@@ -4,11 +4,9 @@ from core.Resource import Resource
 @register_resource("lab_network")
 class LabNetwork(Resource):
 
-    def __init__(self, name, id, location=None, control_modules=None, **kwargs):
-        super().__init__(name=name, id=id)
-
+    def __init__(self, name, id, type_name, location=None, control_modules=None, **kwargs):
+        super().__init__(name=name, id=id, type_name=type_name)
         self.id = id
-        self.type = "LabNetwork"
         self.location = location
         self.control_modules = control_modules or []
 
@@ -16,12 +14,6 @@ class LabNetwork(Resource):
         self.update_status(Resource.Status.AVAILABLE)
         return self.read()
 
-    def read(self):
-        return {
-            "id": self.id,
-            "location": self.location,
-            "control_module_count": len(self.control_modules),
-        }
 
     def update(self, config):
         if "location" in config:

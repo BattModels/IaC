@@ -1,41 +1,23 @@
 import serial
 import time
 import logging
+import threading
 from enum import Enum, auto
 from typing import Any, Dict, Optional
 
 from core.Instrument import Instrument, ConnectionType
 from core.Resource import Resource
-from Utils import RETRY_LIMIT  # assumes you still have this
+from Utils import RETRY_LIMIT
 from core.Register import register_resource
-
-# ----------------------------
-# Pump Protocol Enums
-# ----------------------------
-
 
 
 baud_rate_map = {1200: 1, 2400: 2, 4800: 3, 9600: 4, 19200: 5, 38400: 6}
 
 
-# ----------------------------
-# Pump Instrument Class
-# ----------------------------
 @register_resource("pump")
 class Pump(Instrument):
-    """
-    Terraform-compatible pump resource.
-
-    Exposed configuration (desired_state keys):
-      * flow_rate: float   (your units; previously used x1e6 in command)
-      * volume:    float | None   (total volume to deliver; optional)
-      * running:   bool    (True=start, False=stop)
-      * direction: 'clockwise' | 'counter_clockwise'
-
-    The Terraform provider can simply push those keys into `desired_state`
-    via `create` / `update`, and this driver will handle the low-level
-    serial/PDU logic.
-    """
+    ADJ = 0.143
+    # ================= ENUMS =================
     class PumpMode(Enum):
         SET_ROTATION_SPEED = auto()
         READ_ROTATION_SPEED = auto()
@@ -43,204 +25,166 @@ class Pump(Instrument):
         READ_FLOW_RATE = auto()
         FLOW_CALIBRATION = auto()
 
-
     class State1(Enum):
         STOP_PUMP = 0
         START_PUMP = 1
-        PRIME_PUMP = 17
-
 
     class State2(Enum):
         COUNTER_CLOCKWISE = 1
         CLOCKWISE = 0
 
-
-    class Direction(Enum):
-        COUNTER_CLOCKWISE = "counter_clockwise"
-        CLOCKWISE = "clockwise"
-
+    # ================= INIT =================
     def __init__(
         self,
         name: str,
         id,
         identifier: int,
+        type_name,
         baud_rate: int = 9600,
-        desired_state: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__(
             name=name,
             id=id,
+            type_name=type_name,
             connection_type=ConnectionType.SERIAL,
             identifier=identifier,
-            desired_state=desired_state,
         )
+        self.desired_state['flow_rate'] = 0
         self.baud_rate = baud_rate
-        self.serial_conn: Optional[serial.Serial] = None
-
-    # =======================================================
-    # Instrument template implementations
-    # =======================================================
-
-    def create(self) -> None:
-        if self.serial_conn and self.serial_conn.is_open:
-            self._connected = True
-            return
-
+        self.lock = False
         try:
             self.serial_conn = serial.Serial(self.comm_port, self.baud_rate, timeout=1)
-            self._connected = True
-            self.update_status(Resource.Status.IN_USE)
-            self.log(f"[CONNECT] Pump connected on {self.comm_port}")
-        except Exception as exc:
-            self._connected = False
+        except Exception as e:
+            print(e)
             self.update_status(Resource.Status.ERROR)
-            self.log(f"[CONNECT] Failed to connect pump: {exc}", logging.ERROR)
-            raise
+        # Controller state
+        self.remaining_time = 0
+        self._stop_event = threading.Event()
+        self._control_thread = threading.Thread(target=self._control_loop, daemon=True)
+
+        self._control_thread.start()
+
+    # ================= CONNECTION =================
+    def create(self) -> None:
+        self._connected = True
+        self.update_status(Resource.Status.IN_USE)
 
     def delete(self) -> None:
-        try:
-            if self.serial_conn and self.serial_conn.is_open:
-                self.serial_conn.close()
-            self._connected = False
-            self.update_status(Resource.Status.AVAILABLE)
-            self.log("[DISCONNECT] Pump disconnected")
-        except Exception as exc:
-            self.update_status(Resource.Status.ERROR)
-            self.log(f"[DISCONNECT] Failed to disconnect pump: {exc}", logging.ERROR)
-            raise
+        self._stop_event.set()
+        self._connected = False
+        self.update_status(Resource.Status.AVAILABLE)
 
-    def update(self) -> None:
-        """
-        Map desired_state dict onto actual pump commands.
+    # ================= UPDATE (Terraform entry point) =================
+    def update(self, flow_rate, volume, direction) -> None:
+        while self.lock:
+            time.sleep(0.001)
+        self.lock = True
+        self.desired_state['direction'] = Pump.State2(direction)
+        self.lock = False
+        self.remaining_time = volume / flow_rate * 60
+        while self.lock:
+            time.sleep(0.001)
+        self.lock = True
+        self.desired_state['flow_rate'] = flow_rate
+        print(self.diff())
+        self.lock = False
+        #time.sleep(self.remaining_time)
 
-        Expected keys:
-          * flow_rate (float)
-          * volume (float, optional)
-          * running (bool)
-          * direction ('clockwise' | 'counter_clockwise')
-        """
-        running = bool(self.desired_state.get("running", False))
-        flow_rate = float(self.desired_state.get("flow_rate", 0.0))
-        volume = self.desired_state.get("volume")  # may be None
-        direction_value = self.desired_state.get("direction", Pump.Direction.CLOCKWISE.value)
+    # ================= CONTROLLER LOOP =================
+    def _control_loop(self):
 
-        if isinstance(direction_value, Pump.Direction):
-            direction = direction_value
-        else:
-            direction = Pump.Direction(direction_value)
+        while True:
+            if self.desired_state['flow_rate'] > 0:
+                now = time.time()
+                self.desired_state['state1'] = Pump.State1.START_PUMP
+                self.desired_state['finish_time'] = now + self.remaining_time
+                self.actual_state['finish_time'] = now + self.remaining_time
 
-        if not running or flow_rate <= 0.0:
-            # Stop the pump
-            self._send_command(
-                mode=Pump.PumpMode.SET_FLOW_RATE,
-                flow_rate=0.0,
-                direction=direction,
-                start=False,
-                volume=None,
-            )
-            return
+                self._send_start(self.desired_state['flow_rate'], self.desired_state['direction'])
+                time.sleep(self.remaining_time - Pump.ADJ)
+                self._send_stop()
+                self.desired_state['state1'] = Pump.State1.STOP_PUMP
+                self.desired_state['flow_rate'] = 0
 
-        # Run pump: for given volume (finite time) or effectively continuous
+            
+
+    # ================= READ (observable state) =================
+    def read(self) -> Dict[str, Any]:
+        while self.lock:
+            time.sleep(0.001)
+        self.lock = True
+        while True:
+            try:
+                rotation_speed_bytes = self._send_command(Pump.PumpMode.READ_ROTATION_SPEED)
+                flow_rate_bytes = [0]
+                while flow_rate_bytes[0] != 11:
+                    flow_rate_bytes = list(self._send_command(Pump.PumpMode.READ_FLOW_RATE))
+                flow_rate_bytes = [255 - i for i in flow_rate_bytes]
+                flow_rate = flow_rate_bytes[5] * 32768 + flow_rate_bytes[6] * 128 + flow_rate_bytes[7] / 2 if flow_rate_bytes[8] > 0 else 0
+                self.actual_state.update({'status':self.status, 'flow_rate':flow_rate / 1E6, 'state1':Pump.State1(flow_rate_bytes[8] / 2), 'direction':Pump.State2(flow_rate_bytes[9] / 2)})
+                result = super().read()
+                result['state'] = self.actual_state
+                print(flow_rate_bytes)
+                self.lock = False
+                return result
+            except Exception as e:
+                result = {'state':len(flow_rate_bytes)}
+        
+
+    # ================= LOW LEVEL =================
+    def _send_start(self, flow_rate, direction):
         self._send_command(
             mode=Pump.PumpMode.SET_FLOW_RATE,
             flow_rate=flow_rate,
             direction=direction,
             start=True,
-            volume=volume,
         )
 
-    def read(self) -> Dict[str, Any]:
-        """
-        If your device supports readback (READ_FLOW_RATE etc.), you could
-        actually query it here. For now we mirror desired_state on success,
-        which is still useful from Terraform's POV.
-        """
-        state = {
-            "flow_rate": self.desired_state.get("flow_rate", 0.0),
-            "volume": self.desired_state.get("volume"),
-            "running": self.desired_state.get("running", False),
-            "direction": self.desired_state.get("direction", Pump.Direction.CLOCKWISE.value),
-            "status": self.status.name,
-        }
-        return state
-
-    # =======================================================
-    # Low-level command helpers (your original protocol)
-    # =======================================================
+    def _send_stop(self):
+        self._send_command(
+            mode=Pump.PumpMode.SET_FLOW_RATE,
+            flow_rate=0.0,
+            start=False,
+        )
 
     def _send_command(
         self,
         mode: PumpMode,
-        flow_rate: float,
-        direction: Direction,
-        start: bool,
-        volume: Optional[float] = None,
+        flow_rate=0,
+        direction=State2.CLOCKWISE,
+        start=False,
     ) -> None:
-        """Wrapper around retry + PDU logic."""
         if not self.serial_conn or not self.serial_conn.is_open:
-            self._connect()
+            self.create()
 
-        # Map high-level args to protocol enums
         state1 = Pump.State1.START_PUMP if start else Pump.State1.STOP_PUMP
-        state2 = Pump.State2.CLOCKWISE if direction == Pump.Direction.CLOCKWISE else Pump.State2.COUNTER_CLOCKWISE
-
-        rest_time = 0.0
-        if volume is not None and flow_rate > 0:
-            # Using your previous formula: time [s] = volume / rate * 60
-            rest_time = float(volume) / float(flow_rate) * 60.0
 
         for _ in range(RETRY_LIMIT):
             try:
-                start_cmd = self._generate_command(
-                    mode=mode,
-                    state1=state1,
-                    state2=state2,
-                    value=flow_rate * 1e6,  # same scaling you used before
-                )
-                stop_cmd = self._generate_command(
-                    mode=mode,
-                    state1=Pump.State1.STOP_PUMP,
-                    state2=state2,
-                    value=0.0,
-                )
-
-                self.serial_conn.write(start_cmd)
-                if rest_time > 0.0:
-                    time.sleep(rest_time)
-                    self.serial_conn.write(stop_cmd)
-
-                self.log(
-                    f"[COMMAND] mode={mode.name}, flow_rate={flow_rate}, "
-                    f"direction={direction.value}, start={start}, volume={volume}"
-                )
+                cmd = self._generate_command(mode, state1, direction, flow_rate * 1e6)
+                #print(cmd)
+                self.serial_conn.write(cmd)
+                if mode == Pump.PumpMode.READ_ROTATION_SPEED:
+                    return self.serial_conn.read(8)
+                elif mode == Pump.PumpMode.READ_FLOW_RATE:
+                    return self.serial_conn.read(10)
                 return
             except Exception as exc:
-                self.update_status(Resource.Status.ERROR)
-                self.log(f"[COMMAND] Pump command failed: {exc}", logging.ERROR)
-                time.sleep(1.0)
+                print(exc)
+                time.sleep(1)
 
-        raise BufferError("Pump command failed after retries")
+        raise BufferError("Pump command failed")
 
-    def _generate_command(
-        self,
-        mode: PumpMode,
-        state1: State1,
-        state2: State2,
-        value: float,
-    ) -> bytearray:
+    def _generate_command(self, mode, state1=None, state2=None, value=None):
         pdu = self._get_pdu(mode)
-        if mode == Pump.PumpMode.SET_ROTATION_SPEED:
-            pdu += self._num_to_bytes(value, 2) + [state1.value, state2.value]
-        elif mode == Pump.PumpMode.SET_FLOW_RATE:
+        if mode == Pump.PumpMode.SET_FLOW_RATE:
             pdu += self._num_to_bytes(value, 4) + [state1.value, state2.value]
-        elif mode == Pump.PumpMode.FLOW_CALIBRATION:
-            # You can extend this as needed.
-            pass
-
+        elif mode == Pump.PumpMode.SET_ROTATION_SPEED:
+            pdu += self._num_to_bytes(value, 2) + [state1.value, state2.value]
         fcs = self._xor_bytes([self.identifier] + pdu)
         return bytearray([233, self.identifier] + pdu + [fcs])
 
-    def _get_pdu(self, mode: PumpMode) -> list[int]:
+    def _get_pdu(self, mode):
         if mode == Pump.PumpMode.SET_ROTATION_SPEED:
             return [6, 87, 74]
         if mode == Pump.PumpMode.READ_ROTATION_SPEED:
@@ -251,22 +195,19 @@ class Pump(Instrument):
             return [2, 82, 76]
         if mode == Pump.PumpMode.FLOW_CALIBRATION:
             return [8, 87, 73, 68, 13, 0]
-        return []
 
     @staticmethod
-    def _xor_bytes(values: list[int]) -> int:
-        result = 0
+    def _xor_bytes(values):
+        r = 0
         for v in values:
-            result ^= int(v) & 0xFF
-        return result
+            r ^= int(v) & 0xFF
+        return r
 
     @staticmethod
-    def _num_to_bytes(num: float, length: int) -> list[int]:
-        """Convert an integer value into a big-endian byte list of given length."""
+    def _num_to_bytes(num, length):
         value = int(num)
-        result: list[int] = []
+        out = []
         for _ in range(length):
-            result.append(value & 0xFF)
+            out.append(value & 0xFF)
             value //= 256
-        result.reverse()
-        return result
+        return list(reversed(out))

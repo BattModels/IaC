@@ -1,142 +1,102 @@
 {
   "experiment_id": "exp_001",
-  "description": "Prepare electrolyte and measure viscosity + density.",
+  "description": "Prepare electrolyte and measure conductivity.",
 
   "resources": [
-    "pump_1a",
-    "pump_2a",
-    "relay_12V_1",
-    "viscometer_1",
-    "balance_1"
+    "pump_2",
+    "palmsens4",
+    "valve"
   ],
 
   "tasks": [
 
     {
-      "task_id": "create_pump_1a",
-      "resource": "pump_1a",
+      "task_id": "create_pump_2",
+      "resource": "pump_2",
       "action": "create",
       "args": [],
       "kwargs": {},
       "depends_on": []
     },
     {
-      "task_id": "create_pump_2a",
-      "resource": "pump_2a",
+      "task_id": "create_valve",
+      "resource": "valve",
       "action": "create",
       "args": [],
       "kwargs": {},
       "depends_on": []
     },
     {
-      "task_id": "create_relay_12V_1",
-      "resource": "relay_12V_1",
-      "action": "create",
-      "args": [],
-      "kwargs": {},
-      "depends_on": []
-    },
-    {
-      "task_id": "create_viscometer_1",
-      "resource": "viscometer_1",
-      "action": "create",
-      "args": [],
-      "kwargs": {},
-      "depends_on": []
-    },
-    {
-      "task_id": "create_balance_1",
-      "resource": "balance_1",
-      "action": "create",
-      "args": [],
-      "kwargs": {},
-      "depends_on": []
-    },
-
-    {
-      "task_id": "t1_draw_ec",
-      "resource": "pump_1a",
+      "task_id": "update_valve",
+      "resource": "valve",
       "action": "update",
-      "args": [5],
-      "kwargs": {},
-      "depends_on": ["create_pump_1a"]
+      "args": [],
+      "kwargs": {"dest":5},
+      "depends_on": ["create_valve"]
     },
-
     {
-      "task_id": "t2_draw_dmc",
-      "resource": "pump_1a",
+      "task_id": "create_palmsens4",
+      "resource": "palmsens4",
+      "action": "create",
+      "args": [],
+      "kwargs": {},
+      "depends_on": []
+    },
+    {
+      "task_id": "update_pump_2",
+      "resource": "pump_2",
       "action": "update",
-      "args": [5],
-      "kwargs": {},
-      "depends_on": ["t1_draw_ec"]
+      "args": [],
+      "kwargs": {"flow_rate":4, "volume":0.5, "direction":1},
+      "depends_on": ["create_pump_2", "update_valve2"]
     },
-
     {
-      "task_id": "t3_mix",
-      "resource": "relay_12V_1",
+      "task_id": "update_valve2",
+      "resource": "valve",
       "action": "update",
-      "args": [30],
-      "kwargs": {},
-      "depends_on": ["t2_draw_dmc"]
+      "args": [],
+      "kwargs": {"dest":10},
+      "depends_on": ["update_pump_2"]
     },
-
     {
-      "task_id": "t4_measure_viscosity",
-      "resource": "viscometer_1",
+      "task_id": "update_palmsens4",
+      "resource": "palmsens4",
+      "action": "update",
+      "args": [],
+      "kwargs": {"eac":0.25, "freq_min": 2.0e4, "freq_max": 5.92e5, "n_freq": 10},
+      "depends_on": ["create_palmsens4"]
+    },
+    {
+      "task_id": "read_palmsens4",
+      "resource": "palmsens4",
       "action": "read",
       "args": [],
       "kwargs": {},
-      "depends_on": ["t3_mix"]
+      "depends_on": ["update_palmsens4"]
     },
-
     {
-      "task_id": "t5_measure_density",
-      "resource": "balance_1",
-      "action": "read",
-      "args": [],
-      "kwargs": {},
-      "depends_on": ["t3_mix"]
-    },
-
-    {
-      "task_id": "delete_pump_1a",
-      "resource": "pump_1a",
+      "task_id": "delete_valve",
+      "resource": "valve",
       "action": "delete",
       "args": [],
       "kwargs": {},
-      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
+      "depends_on": ["update_valve2"]
     },
     {
-      "task_id": "delete_pump_2a",
-      "resource": "pump_2a",
+      "task_id": "delete_pump_2",
+      "resource": "pump_2",
       "action": "delete",
       "args": [],
       "kwargs": {},
-      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
+      "depends_on": ["update_pump_2"]
     },
     {
-      "task_id": "delete_relay_12V_1",
-      "resource": "relay_12V_1",
+      "task_id": "delete_palmsens4",
+      "resource": "palmsens4",
       "action": "delete",
       "args": [],
       "kwargs": {},
-      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
-    },
-    {
-      "task_id": "delete_viscometer_1",
-      "resource": "viscometer_1",
-      "action": "delete",
-      "args": [],
-      "kwargs": {},
-      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
-    },
-    {
-      "task_id": "delete_balance_1",
-      "resource": "balance_1",
-      "action": "delete",
-      "args": [],
-      "kwargs": {},
-      "depends_on": ["t4_measure_viscosity", "t5_measure_density"]
+      "depends_on": ["read_palmsens4"]
     }
   ]
 }

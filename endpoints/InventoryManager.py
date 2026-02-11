@@ -47,17 +47,11 @@ class InventoryManager(Resource):
         SOLVE_LIST = auto()
     ref_fields = {}
 
-    def __init__(self, name: str, id: int, status="available",
+    def __init__(self, name: str, id: int, type_name,
                  inventory_path=None, **kwargs):
 
         # Terraform-compatible Resource constructor
-        super().__init__(name=name, id=id)
-
-        # Normalize status string → Status enum
-        if isinstance(status, str):
-            self.status = Resource.Status[status.upper()]
-        else:
-            self.status = status
+        super().__init__(name=name, type_name=type_name, id=id)
 
         # Use injection or default path
         self.inventory_path = inventory_path or os.path.join(current_dir, "Inventory.csv")

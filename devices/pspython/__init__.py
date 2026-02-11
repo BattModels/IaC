@@ -1,7 +1,7 @@
 import clr
 import os
 import sys
-
+sys.path.insert(0, os.path.abspath(os.path.join(__file__, "..", "..")))
 # Load DLLs
 scriptDir = os.path.dirname(os.path.realpath(__file__))
 # This dll contains the classes in which the data is stored
@@ -12,7 +12,6 @@ clr.AddReference(scriptDir + '\\PalmSens.Core.Windows.dll')
 from PalmSens.Windows import CoreDependencies
 
 CoreDependencies.Init()
-
 import importlib.util
 spec_files = importlib.util.find_spec('pspython.pspyfiles')
 files = importlib.util.module_from_spec(spec_files)

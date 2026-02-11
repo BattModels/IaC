@@ -32,13 +32,13 @@ class Viscometer(Instrument):
         READ = auto()
 
 
-    def __init__(self, name: str, id, identifier, status, baud_rate=9600):
+    def __init__(self, name: str, id, identifier, type_name, baud_rate=9600):
         super().__init__(
             name=name,
             id=id,
             connection_type=ConnectionType.SERIAL,
+            type_name=type_name,
             identifier=identifier,
-            status=status
         )
         self.baud_rate = baud_rate
         self.serial_conn = None

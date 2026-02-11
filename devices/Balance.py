@@ -16,9 +16,9 @@ class Balance(Instrument):
     Reads weight data until measurement stabilizes.
     """
 
-    def __init__(self, name: str, id, identifier: int, status, baud_rate: int = 9600, stable_count=15, tolerance=5E-4, **kwargs):
-        super().__init__(name=name, id=id, connection_type=ConnectionType.SERIAL,
-                         identifier=identifier, status=status)
+    def __init__(self, name: str, id, identifier: int, type_name, baud_rate: int = 9600, stable_count=15, tolerance=5E-4, **kwargs):
+        super().__init__(name=name, id=id, type_name=type_name, connection_type=ConnectionType.SERIAL,
+                         identifier=identifier)
         self.baud_rate = baud_rate
         self.serial = None
         self.stable_count = stable_count

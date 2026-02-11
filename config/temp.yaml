@@ -1,0 +1,44 @@
+resources:
+
+  # ======================================================
+  # Lab network (top-level resource)
+  # ======================================================
+  lab_network:
+    type_name: lab_network
+    id: 1
+    name: "IaC"
+    location: "US East"
+    control_modules: ["clio"]
+
+  # ======================================================
+  # CONTROL MODULE 1
+  # ======================================================
+  clio:
+    type_name: control_module
+    id: 2
+    endpoints: 
+      - inventory_manager
+    equipment:
+      - palmsens4
+      - pump_2
+
+  palmsens4:
+    type_name: potentiostat
+    id: 8
+    connection_type: serial
+    identifier: 8
+    baud_rate: 9600
+
+  pump_2:
+    type_name: pump
+    id: 14
+    connection_type: serial
+    identifier: 14
+    baud_rate: 9600
+
+  valve:
+    type_name: valve
+    id: 4
+    connection_type: serial
+    identifier: 4
+    baud_rate: 9600

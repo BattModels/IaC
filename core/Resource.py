@@ -2,9 +2,15 @@ from datetime import datetime
 from enum import Enum, auto
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
-
-
-
+import math
+import os
+TOL = 1E-8
+def normalize_value(v):
+        if hasattr(v, "value__"):  # .NET enum
+            return int(v)
+        if hasattr(v, "value"):    # Python enum
+            return v.value
+        return v
 
 
 class Resource(ABC):
@@ -23,9 +29,10 @@ class Resource(ABC):
         IN_USE = auto()
         ERROR = auto()
 
-    def __init__(self, name: str, id, desired_state: Optional[Dict[str, Any]] = None) -> None:
+    def __init__(self, name: str, type_name, id, desired_state: Optional[Dict[str, Any]] = None) -> None:
         self.name = name
         self.id = id
+        self.type_name = type_name
         self.status: Resource.Status = Resource.Status.AVAILABLE
         self.desired_state: Dict[str, Any] = desired_state or {}
         self.actual_state: Dict[str, Any] = {}
@@ -69,10 +76,10 @@ class Resource(ABC):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def read(self) -> Dict[str, Any]:
         """Return the current actual_state as a plain dict."""
-        raise NotImplementedError
+        self.actual_state['status'] = self.status
+        return {'state':self.actual_state}
 
     @abstractmethod
     def update(self, config: Dict[str, Any]) -> Dict[str, Any]:
@@ -89,18 +96,37 @@ class Resource(ABC):
 
     # ---------- Diff & serialization ----------
 
-    def diff(self) -> Dict[str, Dict[str, Any]]:
-        """
-        Compare desired_state vs actual_state.
+    
 
-        This is exactly the kind of structure a Terraform provider can surface
-        for debugging drift.
-        """
-        return {
-            key: {"current": self.actual_state.get(key), "desired": desired}
-            for key, desired in self.desired_state.items()
-            if self.actual_state.get(key) != desired
-        }
+
+    def diff(self) -> Dict[str, Dict[str, Any]]:
+        differences = {}
+
+        for key, desired in self.desired_state.items():
+            current = self.actual_state.get(key)
+
+            current_n = normalize_value(current)
+            desired_n = normalize_value(desired)
+
+            # -------- FLOAT SAFE COMPARE --------
+            if isinstance(current_n, (float, int)) and isinstance(desired_n, (float, int)):
+                if abs(float(current_n) - float(desired_n)) >= TOL:
+                    differences[key] = {"current": current, "desired": desired}
+                continue
+
+            # -------- PATH SAFE COMPARE --------
+            if isinstance(current_n, str) and isinstance(desired_n, str):
+                if os.sep in current_n or os.sep in desired_n:
+                    if os.path.basename(current_n) != os.path.basename(desired_n):
+                        differences[key] = {"current": current, "desired": desired}
+                    continue
+
+            # -------- DEFAULT --------
+            if current_n != desired_n:
+                differences[key] = {"current": current, "desired": desired}
+
+        return differences
+
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialize minimal resource info to a Terraform/state-friendly dict."""

@@ -26,12 +26,15 @@ def register_resource(type_name: str):
 def autodiscover_resources():
     """Auto-import all modules inside devices/ so decorators run."""
     
-    for module_info in pkgutil.iter_modules([device_path]):
-        module_name = module_info.name
-        importlib.import_module(f"devices.{module_name}")
     for module_info in pkgutil.iter_modules([endpoint_path]):
         module_name = module_info.name
         importlib.import_module(f"endpoints.{module_name}")
+
+    # All plugins need to be put under the specified path
+    for module_info in pkgutil.iter_modules([device_path]):
+        module_name = module_info.name
+        # import detected modules
+        importlib.import_module(f"devices.{module_name}")
     for name, cls in RESOURCE_TYPES.items():
         print(f"{name} → {cls}")
 

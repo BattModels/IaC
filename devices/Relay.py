@@ -30,7 +30,7 @@ class Relay(Instrument):
         OFF = 0
         ON = 1
 
-    def __init__(self, name: str, id, identifier: bytes, status, num_channels=8):
+    def __init__(self, name: str, id, identifier: bytes, type_name, num_channels=8):
         """
         Args:
             name (str): Relay device name
@@ -41,8 +41,8 @@ class Relay(Instrument):
             name=name,
             id=id,
             connection_type=ConnectionType.HID,
+            type_name=type_name,
             identifier=identifier,
-            status=status,
         )
         self.channel_state = [Relay.State_Relay.OFF for _ in range(num_channels)]
         self.device = hid.device()

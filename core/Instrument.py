@@ -24,11 +24,10 @@ class Instrument(Resource, ABC):
     Subclasses MUST implement all 4 methods.
     """
 
-    def __init__(self, name: str, id, connection_type: ConnectionType,
-                 identifier: Any, status=Resource.Status.AVAILABLE, desired_state: Optional[Dict[str, Any]] = None, log_dir="logs"):
-        super().__init__(name=name, id=id)
+    def __init__(self, name: str, id, type_name, connection_type: ConnectionType,
+                 identifier: Any, desired_state: Optional[Dict[str, Any]] = None, log_dir="logs"):
+        super().__init__(name=name, type_name=type_name, id=id)
         
-        self.status=status
         self.connection_type = connection_type
         self.identifier = identifier
         self.comm_port = None
@@ -68,7 +67,8 @@ class Instrument(Resource, ABC):
 
     def read(self):
         """Return device status, including hardware polling if needed."""
-        return {'status':self.status}
+        self.actual_state['status'] = self.status
+        return {'diff': self.diff(), 'state':self.actual_state}
     
     def update(self, *args, **kwargs):
         """Perform device operation (move valve, set flow rate, etc)."""

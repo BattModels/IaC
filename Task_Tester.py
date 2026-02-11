@@ -44,21 +44,19 @@ def run_experiment(tasks: List[TaskNode]) -> Dict[str, Any]:
 
     if remaining:
         # No progress in this iteration → dependency cycle or blocked resource
-        stuck = ", ".join(remaining)
+        stuck = ", ".join([task.name for task in remaining])
         raise RuntimeError(f"Deadlock: no runnable tasks. Remaining: {stuck}")
 
     return
 
 
-if __name__ == "__main__":
+def run_task_tester(resources):
     ROOT = os.path.dirname(os.path.abspath(__file__))
 
     # --------------------------
     # 1. Load IaC resources
     # --------------------------
-    yaml_path = os.path.join(ROOT, "config", "lab_config.yaml")
-    print(f"Loading IaC YAML from: {yaml_path}")
-    resources = load_iac_yaml(yaml_path)
+
 
     # --------------------------
     # 2. Load JSON experiment
@@ -72,3 +70,7 @@ if __name__ == "__main__":
     # 3. Execute DAG
     # --------------------------
     run_experiment(task_nodes)
+
+if __name__ == '__main__':
+    resources = load_iac_yaml("config/temp.yaml")
+    run_task_tester(resources)

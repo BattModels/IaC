@@ -36,10 +36,9 @@ class TaskNode:
         """Execute the task on its resource."""
         if not self.is_ready():
             raise RuntimeError(f"Task {self.task_id} is not ready to run.")
-        '''
         method = getattr(self.resource, self.action)
         self.result = method(*self.args, **self.kwargs)
-        self.completed = True'''
+        self.completed = True
         time.sleep(1)
         return 0
 

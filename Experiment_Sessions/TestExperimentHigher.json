@@ -1,0 +1,5 @@
+{
+  "experiment_id": "exp_001",
+  "description": "Prepare electrolyte and measure viscosity + density.",
+  "require_group":"control_module"
+}

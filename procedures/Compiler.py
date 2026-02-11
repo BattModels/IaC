@@ -13,6 +13,7 @@ def compile_experiment(json_path, resources):
 
     # ---- STEP 1: map logical resource names → actual resource objects ----
     logical_to_obj = {}
+    print(resources)
     for resource_name in spec["resources"]:
         if resource_name not in resources:
             raise KeyError(
@@ -20,13 +21,13 @@ def compile_experiment(json_path, resources):
                 f"not found in IaC resources."
             )
         logical_to_obj[resource_name] = resources[resource_name]
-
+    print('Objects are:')
+    print(logical_to_obj)
     # ---- STEP 2: create all TaskNode objects (without dependencies) ----
     nodes = {}
     for task in spec["tasks"]:
         print(task)
         task_id = task["task_id"]
-
         resource_obj = logical_to_obj[task["resource"]]
 
         node = TaskNode(

@@ -13,21 +13,14 @@ class ControlModule(Resource):
     """
 
 
-    def __init__(self, name, id, status=Resource.Status.AVAILABLE, **kwargs):
-        super().__init__(name, id=id)
+    def __init__(self, name, type_name, id, status=Resource.Status.AVAILABLE, **kwargs):
+        super().__init__(name, type_name=type_name, id=id)
         self.status = status
         self.endpoints = []
         self.equipment = []
 
     # -------- Terraform-style lifecycle -------- #
     def create(self, config=None):
-        return {
-            "id": self.id,
-            "endpoint_count": len(self.endpoints),
-            "equipment_count": len(self.equipment),
-        }
-
-    def read(self):
         return {
             "id": self.id,
             "endpoint_count": len(self.endpoints),

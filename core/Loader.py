@@ -58,10 +58,10 @@ def construct_resource(name: str, spec: Dict[str, Any]) -> Resource:
       - No param rules or hard-coded field names
     """
 
-    if "type" not in spec:
-        raise ValueError(f"Resource '{name}' missing 'type' field")
+    if "type_name" not in spec:
+        raise ValueError(f"Resource '{name}' missing 'type_name' field")
 
-    type_name = spec["type"]
+    type_name = spec["type_name"]
     if type_name not in RESOURCE_TYPES:
         raise ValueError(f"Unknown resource type '{type_name}'")
 
@@ -140,9 +140,9 @@ def auto_resolve_references(resources, specs):
 # YAML Loader (Terraform-style)
 # ------------------------------------------------------------
 def load_iac_yaml(path: str) -> Dict[str, Resource]:
-
+    # Import all plug-ins
     autodiscover_resources()
-
+    # Load resource tree from configuration file
     data = yaml.safe_load(open(path))
     specs = data["resources"]
 
