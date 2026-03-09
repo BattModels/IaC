@@ -1,0 +1,442 @@
+2026-02-17 19:10:34,065 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 18:29:20,208 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:02:16,626 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:04:12,947 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:06:17,863 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:09:47,577 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:17:56,181 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:18:37,572 [INFO] Connected to PalmSens4 [1]
+2026-02-18 19:18:40,308 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-18 19:18:40,516 [INFO] Starting measurement using Temp.psmethod
+2026-02-18 19:18:55,005 [INFO] Measurement finished successfully.
+2026-02-18 19:18:55,114 [INFO] Processed measurement: slope=1.598782484082175, intercept=-70723.59725610982, resistance=44235.9095 ohm
+2026-02-18 19:18:57,236 [INFO] Disconnected from PalmSens4 [1]
+2026-02-18 19:24:48,107 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:25:22,757 [INFO] Connected to PalmSens4 [1]
+2026-02-18 19:25:25,500 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-18 19:25:25,676 [INFO] Starting measurement using Temp.psmethod
+2026-02-18 19:25:40,162 [INFO] Measurement finished successfully.
+2026-02-18 19:25:40,178 [INFO] Processed measurement: slope=1.5427469057815753, intercept=-39371.70207977104, resistance=25520.5192 ohm
+2026-02-18 19:25:42,433 [INFO] Disconnected from PalmSens4 [1]
+2026-02-18 19:26:57,629 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:27:34,461 [INFO] Connected to PalmSens4 [1]
+2026-02-18 19:27:37,235 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-18 19:27:37,601 [INFO] Starting measurement using Temp.psmethod
+2026-02-18 19:27:52,015 [INFO] Measurement finished successfully.
+2026-02-18 19:27:52,048 [INFO] Processed measurement: slope=1.5842577052525828, intercept=-62711.32992104025, resistance=39584.0460 ohm
+2026-02-18 19:27:54,270 [INFO] Disconnected from PalmSens4 [1]
+2026-02-18 19:28:37,833 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:30:33,609 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:31:08,425 [INFO] Connected to PalmSens4 [1]
+2026-02-18 19:31:11,155 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-18 19:31:11,425 [INFO] Starting measurement using Temp.psmethod
+2026-02-18 19:31:26,232 [INFO] Measurement finished successfully.
+2026-02-18 19:31:26,276 [INFO] Processed measurement: slope=1.5557551680661956, intercept=-54207.82501699785, resistance=34843.4163 ohm
+2026-02-18 19:31:32,153 [INFO] Disconnected from PalmSens4 [1]
+2026-02-18 19:32:27,431 [INFO] Connected to PalmSens4 [1]
+2026-02-18 19:32:30,381 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-18 19:32:30,651 [INFO] Starting measurement using Temp.psmethod
+2026-02-18 19:32:45,007 [INFO] Measurement finished successfully.
+2026-02-18 19:32:45,246 [INFO] Processed measurement: slope=1.6306707501273519, intercept=-72616.89696143974, resistance=44531.9185 ohm
+2026-02-18 19:32:51,347 [INFO] Disconnected from PalmSens4 [1]
+2026-02-18 19:41:02,733 [INFO] Connected to PalmSens4 [1]
+2026-02-18 19:41:05,581 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-18 19:41:05,930 [INFO] Starting measurement using Temp.psmethod
+2026-02-18 19:41:19,801 [INFO] Measurement finished successfully.
+2026-02-18 19:41:19,830 [INFO] Processed measurement: slope=1.6335646218831488, intercept=-71093.93879716567, resistance=43520.7385 ohm
+2026-02-18 19:41:29,088 [INFO] Disconnected from PalmSens4 [1]
+2026-02-18 19:41:45,006 [INFO] Connected to PalmSens4 [1]
+2026-02-18 19:41:47,817 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-18 19:41:48,041 [INFO] Starting measurement using Temp.psmethod
+2026-02-18 19:42:02,231 [INFO] Measurement finished successfully.
+2026-02-18 19:42:02,279 [INFO] Processed measurement: slope=1.6623994716292432, intercept=-74524.55617241593, resistance=44829.5115 ohm
+2026-02-18 19:42:08,247 [INFO] Disconnected from PalmSens4 [1]
+2026-02-18 19:44:09,716 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:45:06,076 [INFO] Connected to PalmSens4 [1]
+2026-02-18 19:45:08,868 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-18 19:45:09,282 [INFO] Starting measurement using Temp.psmethod
+2026-02-18 19:45:23,452 [INFO] Measurement finished successfully.
+2026-02-18 19:45:23,485 [INFO] Processed measurement: slope=1.63023472085329, intercept=-71881.9229493808, resistance=44092.9898 ohm
+2026-02-18 19:45:30,490 [INFO] Disconnected from PalmSens4 [1]
+2026-02-18 19:47:24,802 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-18 19:48:10,556 [INFO] Connected to PalmSens4 [1]
+2026-02-18 19:48:13,274 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-18 19:48:13,510 [INFO] Starting measurement using Temp.psmethod
+2026-02-18 19:48:28,024 [INFO] Measurement finished successfully.
+2026-02-18 19:48:28,120 [INFO] Processed measurement: slope=1.6777510079880815, intercept=-92503.05700706092, resistance=55135.1521 ohm
+2026-02-18 19:48:42,789 [INFO] Disconnected from PalmSens4 [1]
+2026-02-19 14:49:49,536 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-19 14:54:35,119 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-19 14:54:42,020 [INFO] Connected to PalmSens4 [1]
+2026-02-19 14:54:44,652 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-19 14:54:44,873 [INFO] Starting measurement using Temp.psmethod
+2026-02-19 14:54:59,014 [INFO] Measurement finished successfully.
+2026-02-19 14:54:59,094 [INFO] Processed measurement: slope=1.5928507120185458, intercept=-63310.649900762415, resistance=39746.7568 ohm
+2026-02-19 14:55:12,506 [INFO] Disconnected from PalmSens4 [1]
+2026-02-19 15:56:26,446 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-19 15:56:33,976 [INFO] Connected to PalmSens4 [1]
+2026-02-19 15:57:33,057 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-19 15:57:41,804 [INFO] Connected to PalmSens4 [1]
+2026-02-19 16:00:17,419 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-19 16:00:24,750 [INFO] Connected to PalmSens4 [1]
+2026-02-19 16:00:53,427 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-19 16:01:00,751 [INFO] Connected to PalmSens4 [1]
+2026-02-19 16:01:05,689 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-19 16:01:05,945 [INFO] Starting measurement using Temp.psmethod
+2026-02-19 16:01:20,295 [INFO] Measurement finished successfully.
+2026-02-19 16:01:20,376 [INFO] Processed measurement: slope=1.580190968846461, intercept=-64604.83670020514, resistance=40884.1956 ohm
+2026-02-19 16:01:37,429 [INFO] Disconnected from PalmSens4 [1]
+2026-02-23 15:49:39,769 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-23 15:50:19,080 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-23 15:50:25,991 [INFO] Connected to PalmSens4 [1]
+2026-02-23 15:50:30,979 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-23 15:50:31,299 [INFO] Starting measurement using Temp.psmethod
+2026-02-23 15:50:45,571 [INFO] Measurement finished successfully.
+2026-02-23 15:50:45,697 [INFO] Processed measurement: slope=1.5775111867146632, intercept=-56821.67483331048, resistance=36019.8237 ohm
+2026-02-23 15:50:59,139 [INFO] Disconnected from PalmSens4 [1]
+2026-02-24 16:08:33,370 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 16:08:45,444 [INFO] Connected to PalmSens4 [1]
+2026-02-24 16:13:48,495 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 16:14:00,431 [INFO] Connected to PalmSens4 [1]
+2026-02-24 16:17:12,677 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-24 16:17:12,869 [INFO] Starting measurement using Temp.psmethod
+2026-02-24 16:17:26,915 [INFO] Measurement finished successfully.
+2026-02-24 16:17:26,946 [INFO] Processed measurement: slope=1.6019988856630092, intercept=-63699.92961334349, resistance=39762.7802 ohm
+2026-02-24 16:17:29,221 [INFO] Disconnected from PalmSens4 [1]
+2026-02-24 16:18:55,545 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 16:19:57,697 [INFO] Connected to PalmSens4 [1]
+2026-02-24 16:23:34,144 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-24 16:23:34,426 [INFO] Starting measurement using Temp.psmethod
+2026-02-24 16:23:48,771 [INFO] Measurement finished successfully.
+2026-02-24 16:23:48,880 [INFO] Processed measurement: slope=1.6377950087373279, intercept=-77722.5368315426, resistance=47455.5951 ohm
+2026-02-24 16:23:51,155 [INFO] Disconnected from PalmSens4 [1]
+2026-02-24 16:33:56,911 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 16:36:01,411 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 17:09:15,935 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 17:40:35,136 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 17:56:32,059 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 18:00:06,477 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 18:00:52,082 [INFO] Connected to PalmSens4 [1]
+2026-02-24 18:04:47,284 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 18:05:34,081 [INFO] Connected to PalmSens4 [1]
+2026-02-24 18:09:23,985 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-24 18:09:24,240 [INFO] Starting measurement using Temp.psmethod
+2026-02-24 18:09:38,705 [INFO] Measurement finished successfully.
+2026-02-24 18:09:38,819 [INFO] Processed measurement: slope=1.6437550841419142, intercept=-87887.48063799417, resistance=53467.5035 ohm
+2026-02-24 18:09:41,336 [INFO] Disconnected from PalmSens4 [1]
+2026-02-24 19:30:46,108 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 19:32:31,785 [INFO] Connected to PalmSens4 [1]
+2026-02-24 19:36:14,328 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-24 19:36:14,756 [INFO] Starting measurement using Temp.psmethod
+2026-02-24 19:36:29,128 [INFO] Measurement finished successfully.
+2026-02-24 19:36:29,190 [INFO] Processed measurement: slope=1.5963658505542, intercept=-67950.2988114905, resistance=42565.6179 ohm
+2026-02-24 19:36:47,131 [INFO] Disconnected from PalmSens4 [1]
+2026-02-24 19:38:47,766 [INFO] Connected to PalmSens4 [1]
+2026-02-24 19:42:29,565 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-24 19:42:29,990 [INFO] Starting measurement using Temp.psmethod
+2026-02-24 19:42:43,842 [INFO] Measurement finished successfully.
+2026-02-24 19:42:43,842 [INFO] Processed measurement: slope=1.65419665462191, intercept=-86709.8199866273, resistance=52418.0845 ohm
+2026-02-24 19:43:01,928 [INFO] Disconnected from PalmSens4 [1]
+2026-02-24 19:50:31,627 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 19:51:27,759 [INFO] Connected to PalmSens4 [1]
+2026-02-24 19:54:56,496 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-24 19:54:56,909 [INFO] Starting measurement using Temp.psmethod
+2026-02-24 19:55:11,389 [INFO] Measurement finished successfully.
+2026-02-24 19:55:11,485 [INFO] Processed measurement: slope=1.5569214124286985, intercept=-46969.90185436876, resistance=30168.4475 ohm
+2026-02-24 19:55:13,712 [INFO] Disconnected from PalmSens4 [1]
+2026-02-24 20:59:13,663 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-24 21:00:34,521 [INFO] Connected to PalmSens4 [1]
+2026-02-24 21:04:16,414 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-24 21:04:16,701 [INFO] Starting measurement using Temp.psmethod
+2026-02-24 21:04:30,867 [INFO] Measurement finished successfully.
+2026-02-24 21:04:30,930 [INFO] Processed measurement: slope=0.8938374567972764, intercept=-71.38734747572835, resistance=79.8661 ohm
+2026-02-24 21:04:33,179 [INFO] Disconnected from PalmSens4 [1]
+2026-02-25 16:03:32,383 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-25 16:07:42,052 [INFO] Connected to PalmSens4 [1]
+2026-02-25 17:10:20,642 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-25 17:11:02,917 [INFO] Connected to PalmSens4 [1]
+2026-02-25 17:14:36,833 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-25 17:14:37,056 [INFO] Starting measurement using Temp.psmethod
+2026-02-25 17:14:51,452 [INFO] Measurement finished successfully.
+2026-02-25 17:14:51,581 [INFO] Processed measurement: slope=1.691423506654474, intercept=-62379.71679170668, resistance=36880.0106 ohm
+2026-02-25 17:14:53,828 [INFO] Disconnected from PalmSens4 [1]
+2026-02-25 17:43:15,866 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-25 17:47:25,377 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-25 19:11:19,278 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-25 19:21:14,423 [INFO] Connected to PalmSens4 [1]
+2026-02-25 19:23:57,887 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-25 19:24:45,329 [INFO] Connected to PalmSens4 [1]
+2026-02-25 19:26:57,465 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-25 19:27:47,307 [INFO] Connected to PalmSens4 [1]
+2026-02-25 19:28:53,328 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-25 19:29:04,416 [INFO] Connected to PalmSens4 [1]
+2026-02-25 19:30:34,465 [INFO] Disconnected from PalmSens4 [1]
+2026-02-25 19:32:34,944 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-25 19:32:46,345 [INFO] Connected to PalmSens4 [1]
+2026-02-25 19:35:58,516 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-25 19:35:58,819 [INFO] Starting measurement using Temp.psmethod
+2026-02-25 19:36:13,124 [INFO] Measurement finished successfully.
+2026-02-25 19:36:13,188 [INFO] Processed measurement: slope=1.717123334969733, intercept=-76785.95302176192, resistance=44717.7855 ohm
+2026-02-25 19:36:15,383 [INFO] Disconnected from PalmSens4 [1]
+2026-02-26 16:42:20,517 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 16:44:41,223 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 16:45:55,193 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 16:46:26,731 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 16:51:35,012 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 16:59:06,247 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 17:47:54,356 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 18:44:28,935 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 18:45:27,051 [INFO] Connected to PalmSens4 [1]
+2026-02-26 18:46:48,384 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-26 18:46:48,427 [INFO] Starting measurement using Temp.psmethod
+2026-02-26 19:05:40,107 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 19:08:05,193 [INFO] Connected to PalmSens4 [1]
+2026-02-26 19:15:03,912 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 19:15:14,239 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 19:17:00,823 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 19:18:21,896 [INFO] Connected to PalmSens4 [1]
+2026-02-26 19:22:03,280 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 19:23:09,121 [INFO] Connected to PalmSens4 [1]
+2026-02-26 19:27:05,074 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 19:27:43,823 [INFO] Connected to PalmSens4 [1]
+2026-02-26 19:28:35,953 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 19:30:20,987 [INFO] Connected to PalmSens4 [1]
+2026-02-26 19:32:56,227 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 19:33:39,824 [INFO] Connected to PalmSens4 [1]
+2026-02-26 19:37:13,580 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-02-26 19:37:14,071 [INFO] Starting measurement using Temp.psmethod
+2026-02-26 19:37:28,934 [INFO] Measurement finished successfully.
+2026-02-26 19:37:29,188 [INFO] Processed measurement: slope=1.5665325334432223, intercept=-31301.84671591242, resistance=19981.6129 ohm
+2026-02-26 19:37:31,560 [INFO] Disconnected from PalmSens4 [1]
+2026-02-26 19:39:04,612 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:00:44,078 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:03:55,202 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:04:53,998 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:05:32,680 [INFO] Connected to PalmSens4 [1]
+2026-02-26 20:05:52,826 [INFO] Disconnected from PalmSens4 [1]
+2026-02-26 20:06:27,076 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:10:19,720 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:11:17,866 [INFO] Connected to PalmSens4 [1]
+2026-02-26 20:11:38,081 [INFO] Disconnected from PalmSens4 [1]
+2026-02-26 20:13:29,397 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:14:04,256 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:14:53,894 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:15:37,253 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-02-26 20:16:35,706 [INFO] Connected to PalmSens4 [1]
+2026-02-26 20:17:06,532 [INFO] Disconnected from PalmSens4 [1]
+2026-02-27 04:07:07,749 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-02 17:29:11,461 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-02 17:30:01,977 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-02 17:35:57,629 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-02 17:36:04,366 [INFO] Connected to PalmSens4 [1]
+2026-03-02 17:39:20,690 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-02 17:39:20,882 [INFO] Starting measurement using Temp.psmethod
+2026-03-02 17:39:35,228 [INFO] Measurement finished successfully.
+2026-03-02 17:39:35,338 [INFO] Processed measurement: slope=1.546983440001963, intercept=-47802.61545723374, resistance=30900.5347 ohm
+2026-03-02 17:39:37,568 [INFO] Disconnected from PalmSens4 [1]
+2026-03-02 17:42:39,539 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-02 17:43:19,578 [INFO] Connected to PalmSens4 [1]
+2026-03-02 17:47:00,497 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-02 17:47:00,800 [INFO] Starting measurement using Temp.psmethod
+2026-03-02 17:47:14,892 [INFO] Measurement finished successfully.
+2026-03-02 17:47:15,002 [INFO] Processed measurement: slope=1.6180756392272417, intercept=-69684.27027422581, resistance=43066.1389 ohm
+2026-03-02 17:47:17,430 [INFO] Disconnected from PalmSens4 [1]
+2026-03-03 11:45:29,455 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-03 11:45:36,441 [INFO] Connected to PalmSens4 [1]
+2026-03-03 12:02:52,417 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-03 15:55:52,338 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-03 16:15:12,547 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-03 16:15:19,532 [INFO] Connected to PalmSens4 [1]
+2026-03-03 16:18:34,621 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-03 16:18:34,860 [INFO] Starting measurement using Temp.psmethod
+2026-03-03 16:18:49,034 [INFO] Measurement finished successfully.
+2026-03-03 16:18:49,059 [INFO] Processed measurement: slope=1.5678415820951908, intercept=-44197.190879699185, resistance=28189.8320 ohm
+2026-03-03 16:18:51,223 [INFO] Disconnected from PalmSens4 [1]
+2026-03-03 17:05:19,612 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-03 17:06:21,566 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 11:59:31,606 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 11:59:58,081 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 12:00:52,659 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 15:53:06,053 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 15:53:42,421 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 15:54:49,118 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 15:58:12,469 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 16:00:12,038 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 16:00:17,917 [INFO] Connected to PalmSens4 [1]
+2026-03-04 16:19:51,418 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 16:20:04,922 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 16:20:11,844 [INFO] Connected to PalmSens4 [1]
+2026-03-04 16:23:32,579 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-04 16:23:32,817 [INFO] Starting measurement using Temp.psmethod
+2026-03-04 16:23:46,987 [INFO] Measurement finished successfully.
+2026-03-04 16:23:47,059 [INFO] Processed measurement: slope=1.7569433265146939, intercept=-114104.8007534418, resistance=64945.0663 ohm
+2026-03-04 16:23:49,237 [INFO] Disconnected from PalmSens4 [1]
+2026-03-04 16:24:39,882 [INFO] Connected to PalmSens4 [1]
+2026-03-04 16:27:37,127 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-04 16:27:37,365 [INFO] Starting measurement using Temp.psmethod
+2026-03-04 16:27:51,142 [INFO] Measurement finished successfully.
+2026-03-04 16:27:51,174 [INFO] Processed measurement: slope=1.6964696998434483, intercept=-83560.48576770429, resistance=49255.5132 ohm
+2026-03-04 16:28:09,090 [INFO] Disconnected from PalmSens4 [1]
+2026-03-04 17:11:19,911 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 18:05:12,683 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 18:06:23,433 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 18:07:07,719 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 18:08:50,394 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 18:39:32,572 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 18:40:29,472 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 18:41:55,591 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 18:42:07,746 [INFO] Connected to PalmSens4 [1]
+2026-03-04 19:12:22,159 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:12:35,245 [INFO] Connected to PalmSens4 [1]
+2026-03-04 19:14:55,337 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:15:06,160 [INFO] Connected to PalmSens4 [1]
+2026-03-04 19:50:16,587 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:52:32,727 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:53:06,409 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:53:06,409 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:55:45,611 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:56:24,726 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:56:24,726 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:56:39,040 [INFO] Connected to PalmSens4 [1]
+2026-03-04 19:56:39,040 [INFO] Connected to PalmSens4 [1]
+2026-03-04 19:57:15,799 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:57:57,270 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:57:57,270 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 19:59:46,679 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-04 20:00:40,038 [INFO] Connected to PalmSens4 [1]
+2026-03-04 20:04:11,310 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-04 20:04:11,784 [INFO] Starting measurement using Temp.psmethod
+2026-03-04 20:04:26,137 [INFO] Measurement finished successfully.
+2026-03-04 20:04:26,217 [INFO] Processed measurement: slope=1.6764574134178536, intercept=-89755.05751184076, resistance=53538.5252 ohm
+2026-03-04 20:04:44,397 [INFO] Disconnected from PalmSens4 [1]
+2026-03-04 20:05:25,066 [INFO] Connected to PalmSens4 [1]
+2026-03-04 20:08:57,002 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-04 20:08:57,283 [INFO] Starting measurement using Temp.psmethod
+2026-03-04 20:09:02,619 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-04 20:09:03,144 [INFO] Starting measurement using Temp.psmethod
+2026-03-04 20:09:17,281 [INFO] Measurement finished successfully.
+2026-03-04 20:09:17,566 [INFO] Processed measurement: slope=1.8037818868756779, intercept=-122346.69634955197, resistance=67827.8772 ohm
+2026-03-04 20:09:19,117 [INFO] Disconnected from PalmSens4 [1]
+2026-03-05 17:51:28,263 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 17:52:56,006 [INFO] Connected to PalmSens4 [1]
+2026-03-05 17:56:52,047 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 17:56:52,653 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 17:57:07,439 [INFO] Measurement finished successfully.
+2026-03-05 17:57:07,536 [INFO] Processed measurement: slope=1.5944949544589384, intercept=-49332.87958830396, resistance=30939.5018 ohm
+2026-03-05 18:02:57,499 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 18:02:57,881 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 18:03:12,045 [INFO] Measurement finished successfully.
+2026-03-05 18:03:12,045 [INFO] Processed measurement: slope=1.650274434231078, intercept=-86820.68961268838, resistance=52609.8495 ohm
+2026-03-05 18:07:30,903 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 18:08:59,969 [INFO] Connected to PalmSens4 [1]
+2026-03-05 18:12:29,723 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 18:12:30,009 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 18:12:44,259 [INFO] Measurement finished successfully.
+2026-03-05 18:12:44,592 [INFO] Processed measurement: slope=1.6458315230144152, intercept=-74121.18039711103, resistance=45035.7034 ohm
+2026-03-05 18:15:28,736 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 18:16:12,288 [INFO] Connected to PalmSens4 [1]
+2026-03-05 18:19:53,643 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 18:19:53,993 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 18:20:08,386 [INFO] Measurement finished successfully.
+2026-03-05 18:20:08,482 [INFO] Processed measurement: slope=1.654274957885996, intercept=-81128.44153281477, resistance=49041.6911 ohm
+2026-03-05 18:25:11,839 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 18:25:12,015 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 18:25:16,700 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 18:25:17,003 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 18:25:31,203 [INFO] Measurement finished successfully.
+2026-03-05 18:25:31,219 [INFO] Processed measurement: slope=1.6568060318568099, intercept=-89966.45158728167, resistance=54301.1372 ohm
+2026-03-05 18:46:23,960 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 18:48:20,779 [INFO] Connected to PalmSens4 [1]
+2026-03-05 18:52:15,932 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 18:52:16,233 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 18:52:30,602 [INFO] Measurement finished successfully.
+2026-03-05 18:52:30,665 [INFO] Processed measurement: slope=1.5897709156242923, intercept=-47467.70644145112, resistance=29858.2053 ohm
+2026-03-05 19:00:34,705 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 19:01:29,714 [INFO] Connected to PalmSens4 [1]
+2026-03-05 19:05:07,599 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 19:05:07,947 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 19:12:32,542 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 19:13:18,699 [INFO] Connected to PalmSens4 [1]
+2026-03-05 19:17:01,350 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 19:17:01,699 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 19:17:16,117 [INFO] Measurement finished successfully.
+2026-03-05 19:17:16,155 [INFO] Processed measurement: slope=1.5947806063554482, intercept=-45517.89065273701, resistance=28541.7884 ohm
+2026-03-05 19:21:41,083 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 19:43:30,514 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 19:45:04,599 [INFO] Connected to PalmSens4 [1]
+2026-03-05 19:49:02,134 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 19:49:02,373 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 19:49:16,849 [INFO] Measurement finished successfully.
+2026-03-05 19:49:17,055 [INFO] Processed measurement: slope=1.5209667264058204, intercept=-36090.959118154286, resistance=23728.9603 ohm
+2026-03-05 19:57:26,925 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 19:58:05,543 [INFO] Connected to PalmSens4 [1]
+2026-03-05 20:01:52,242 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 20:01:52,466 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 20:02:07,229 [INFO] Measurement finished successfully.
+2026-03-05 20:02:07,308 [INFO] Processed measurement: slope=1.6650645342259052, intercept=-90087.05043043698, resistance=54104.2396 ohm
+2026-03-05 20:06:29,344 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 20:08:46,529 [INFO] Connected to PalmSens4 [1]
+2026-03-05 20:12:28,471 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 20:12:28,820 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 20:12:43,047 [INFO] Measurement finished successfully.
+2026-03-05 20:12:43,111 [INFO] Processed measurement: slope=1.7170229106136328, intercept=-116393.41207347074, resistance=67787.9202 ohm
+2026-03-05 20:19:01,769 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 20:19:02,329 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 20:19:05,399 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 20:19:06,187 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 20:19:20,531 [INFO] Measurement finished successfully.
+2026-03-05 20:19:20,532 [INFO] Processed measurement: slope=1.7212080496650473, intercept=-113104.7006634418, resistance=65712.3935 ohm
+2026-03-05 20:20:48,615 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 20:21:31,460 [INFO] Connected to PalmSens4 [1]
+2026-03-05 20:25:10,851 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-05 20:25:11,153 [INFO] Starting measurement using Temp.psmethod
+2026-03-05 20:25:26,015 [INFO] Measurement finished successfully.
+2026-03-05 20:25:26,067 [INFO] Processed measurement: slope=1.6553358907560956, intercept=-80281.22154809465, resistance=48498.4480 ohm
+2026-03-05 20:28:37,590 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 20:31:06,522 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 20:31:25,455 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 20:50:32,943 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 20:51:59,993 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-05 20:54:17,687 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 18:29:00,483 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 18:35:20,475 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 18:35:52,766 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 18:37:35,270 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 18:40:24,269 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 18:41:10,534 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 18:42:19,759 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 18:44:51,727 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:02:52,689 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:04:19,054 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:13:51,654 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:14:03,831 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:16:10,546 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:17:16,366 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:18:35,128 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:19:35,023 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:23:24,065 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:39:42,812 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:41:24,582 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:42:25,514 [INFO] Connected to PalmSens4 [1]
+2026-03-08 19:45:53,707 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-08 19:45:54,252 [INFO] Starting measurement using Temp.psmethod
+2026-03-08 19:46:09,303 [INFO] Measurement finished successfully.
+2026-03-08 19:46:09,352 [INFO] Processed measurement: slope=1.5501325281600606, intercept=-42367.63865972378, resistance=27331.6235 ohm
+2026-03-08 19:50:36,389 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-08 19:50:36,686 [INFO] Starting measurement using Temp.psmethod
+2026-03-08 19:50:51,083 [INFO] Measurement finished successfully.
+2026-03-08 19:50:51,128 [INFO] Processed measurement: slope=1.6222465156549812, intercept=-66799.7122674921, resistance=41177.2882 ohm
+2026-03-08 19:55:26,419 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-08 19:55:26,874 [INFO] Starting measurement using Temp.psmethod
+2026-03-08 19:55:40,998 [INFO] Measurement finished successfully.
+2026-03-08 19:55:41,072 [INFO] Processed measurement: slope=1.6768994811026645, intercept=-81537.31743249693, resistance=48623.8551 ohm
+2026-03-08 19:57:42,206 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 19:58:46,781 [INFO] Connected to PalmSens4 [1]
+2026-03-08 20:02:26,739 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-08 20:02:27,055 [INFO] Starting measurement using Temp.psmethod
+2026-03-08 20:05:36,610 [INFO] [INIT] palmsens4 / SERIAL @ COM8
+2026-03-08 20:06:45,409 [INFO] Connected to PalmSens4 [1]
+2026-03-08 20:10:10,632 [INFO] Loading method file: c:\Users\MUSE_V2\Desktop\Yuhan Work\Ang-Chen-Sample\devices\Temp.psmethod
+2026-03-08 20:10:10,835 [INFO] Starting measurement using Temp.psmethod
+2026-03-08 20:10:25,225 [INFO] Measurement finished successfully.
+2026-03-08 20:10:25,304 [INFO] Processed measurement: slope=1.5787681075283957, intercept=-54808.984694170584, resistance=34716.2984 ohm

@@ -8,25 +8,38 @@ resources:
     id: 1
     name: "IaC"
     location: "US East"
-    control_modules: ["clio"]
+    control_modules: ["clio_1"]
 
   # ======================================================
   # CONTROL MODULE 1
   # ======================================================
-  clio:
+  clio_1:
     type_name: control_module
+    module_type: clio
     id: 2
     endpoints: 
       - inventory_manager
     equipment:
       - palmsens4
+      - balance
+      - pump_1
       - pump_2
+      - valve
+      - relay_1
+      - relay_2
 
   palmsens4:
     type_name: potentiostat
     id: 8
     connection_type: serial
     identifier: 8
+    baud_rate: 9600
+
+  pump_1:
+    type_name: pump
+    id: 12
+    connection_type: serial
+    identifier: 12
     baud_rate: 9600
 
   pump_2:
@@ -42,3 +55,22 @@ resources:
     connection_type: serial
     identifier: 4
     baud_rate: 9600
+
+  balance:
+    type_name: balance
+    id: 9
+    connection_type: serial
+    identifier: 9
+    baud_rate: 9600
+
+  relay_1:
+      type_name: relay
+      id: 10
+      connection_type: hid
+      identifier: XFw/XEhJRCNWSURfMTZDMCZQSURfMDVERiM4JjIwZDg3NDJmJjAmMDAwMCN7NGQxZTU1YjItZjE2Zi0xMWNmLTg4Y2ItMDAxMTExMDAwMDMwfQ==
+
+  relay_2:
+    type_name: relay
+    id: 11
+    connection_type: hid
+    identifier: XFw/XEhJRCNWSURfMTZDMCZQSURfMDVERiM4JmJlNDA3NDAmMCYwMDAwI3s0ZDFlNTViMi1mMTZmLTExY2YtODhjYi0wMDExMTEwMDAwMzB9

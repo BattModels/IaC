@@ -2,69 +2,113 @@ import time
 import serial
 import re
 import logging
-from pathlib import Path
+from typing import Any, Dict
 
 from Utils import RETRY_LIMIT
 from core.Instrument import Instrument, ConnectionType
 from core.Resource import Resource
 from core.Register import register_resource
 
+
 @register_resource("balance")
 class Balance(Instrument):
     """
-    Electronic balance controlled over a serial connection.
-    Reads weight data until measurement stabilizes.
+    Electronic balance over serial.
+
+    Logical state:
+        - status
+
+    Observable state:
+        - mass_reading
+        - is_stable
     """
 
-    def __init__(self, name: str, id, identifier: int, type_name, baud_rate: int = 9600, stable_count=15, tolerance=5E-4, **kwargs):
-        super().__init__(name=name, id=id, type_name=type_name, connection_type=ConnectionType.SERIAL,
-                         identifier=identifier)
-        self.baud_rate = baud_rate
-        self.serial = None
-        self.stable_count = stable_count
-        self.previous_measurement = tolerance
+    def __init__(
+        self,
+        name: str,
+        id,
+        identifier: int,
+        type_name,
+        baud_rate: int = 9600,
+        stable_count: int = 10,
+        **kwargs,
+    ):
+        super().__init__(
+            name=name,
+            id=id,
+            type_name=type_name,
+            connection_type=ConnectionType.SERIAL,
+            identifier=identifier,
+        )
 
-    # ---------- Instrument Lifecycle ----------
+        self.baud_rate = baud_rate
+        self.stable_count_required = stable_count
+        self.serial_conn = None
+
+        # Observable state
+        self.actual_state.update({
+            "mass_reading": 0.0,
+            "is_stable": False,
+        })
+
+        # Physical connection established at initialization
+        self._connect_serial()
+
+    # ================= Physical Connection =================
+
+    def _connect_serial(self):
+        try:
+            self.serial_conn = serial.Serial(
+                self.comm_port,
+                self.baud_rate,
+                timeout=1,
+            )
+            self._connected = True
+            self.update_status(Resource.Status.AVAILABLE)
+        except Exception as e:
+            self._connected = False
+            self.update_status(Resource.Status.ERROR)
+            self.log(f"Balance connection failed: {e}", level=logging.ERROR)
+
+    # ================= Lifecycle (Logical Only) =================
 
     def create(self):
-        """Open serial connection."""
-        try:
-            self.serial = serial.Serial(self.comm_port, self.baud_rate, timeout=1)
+        """
+        Logical allocation only.
+        """
+        if self.status != Resource.Status.ERROR:
             self.update_status(Resource.Status.IN_USE)
-            self.log(f"Connected to balance on {self.comm_port} at {self.baud_rate} baud.")
-            return
-        except Exception as e:
-            self.log(f"Failed to connect to {self.comm_port}: {e}",
-                        level=logging.ERROR)
-            self.update_status(Resource.Status.ERROR)
-            raise ConnectionError(f"Unable to connect to balance on {self.comm_port} after {RETRY_LIMIT} attempts.")
 
     def delete(self):
-        """Close serial connection."""
-        if self.serial:
-            self.serial.close()
+        """
+        Logical release only.
+        """
+        if self.status != Resource.Status.ERROR:
             self.update_status(Resource.Status.AVAILABLE)
-            self.log(f"Disconnected from balance on {self.comm_port}.")
 
-    # ---------- Measurement Action ----------
+    # ================= Read (Observable) =================
 
-    def read(self, period=0.1):
+    def read(self, period: float = 0.1) -> Dict[str, Any]:
         """
-        Perform a mass measurement and wait until the reading stabilizes.
-        Returns:
-            float: The stabilized mass measurement.
+        Continuously reads balance output and updates:
+            - mass_reading
+            - is_stable
+        Stability determined by absence of '?'.
         """
-        if not self.serial:
-            self.create()
 
-        # Wait briefly before measurement (allow balance to initialize)
-        time.sleep(5)
+        if not self.serial_conn or not self.serial_conn.is_open:
+            self.update_status(Resource.Status.ERROR)
+            return super().read()
 
-        stable_count = 0
+        stable_counter = 0
+        latest_value = self.actual_state.get("mass_reading", 0.0)
 
-        while True:
+        for _ in range(RETRY_LIMIT * 50):
             try:
-                line = self.serial.readline().decode(errors="ignore").strip()
+                line = self.serial_conn.readline().decode(
+                    errors="ignore"
+                ).strip()
+
                 if not line:
                     continue
 
@@ -72,22 +116,31 @@ class Balance(Instrument):
                 if not match:
                     continue
 
-                measurement = float(match.group())
-                self.log(f"Received measurement: {measurement}")
+                latest_value = float(match.group())
 
-                # Stability detection: skip lines with '?' or unstable values
                 if '?' not in line:
-                    stable_count += 1
+                    stable_counter += 1
                 else:
-                    stable_count = 0
+                    stable_counter = 0
 
-                if stable_count >= self.stable_count:
-                    self.log(f"Measurement stabilized: {measurement}")
-                    result = super().read()
-                    return result.extend({'Mass':measurement})
+                is_stable = stable_counter >= self.stable_count_required
+
+                self.actual_state["status"] = self.status,
+
+                if is_stable:
+                    break
 
                 time.sleep(period)
 
             except Exception as e:
-                self.log(f"Error during measurement: {e}", level=logging.ERROR)
-                time.sleep(1)
+                self.log(f"Read error: {e}", level=logging.ERROR)
+                self.update_status(Resource.Status.ERROR)
+                return {"state": {"status": self.status}}
+
+        result = super().read()
+        result["state"] = {
+                    "status": self.status,
+                    "mass_reading": latest_value,
+                    "is_stable": is_stable,
+                }
+        return result

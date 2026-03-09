@@ -44,13 +44,16 @@ class Relay(Instrument):
             type_name=type_name,
             identifier=identifier,
         )
-        self.channel_state = [Relay.State_Relay.OFF for _ in range(num_channels)]
+        self._channel_state = [Relay.State_Relay.OFF for _ in range(num_channels)]
         self.device = hid.device()
         self.device.open_path(self.identifier)
-        for i in range(1, num_channels + 1):
+        self.reset()
+
+    def reset(self):
+        for i in range(1, len(self._channel_state) + 1):
             cmd = [0x00, 0xFD, i]
+            self._channel_state[i - 1] = Relay.State_Relay.OFF
             self.device.send_feature_report(cmd)
-        self.device.close()
 
     # ---------- Connection ----------
     def create(self):
@@ -71,8 +74,7 @@ class Relay(Instrument):
         """Safely close HID connection."""
         try:
             if self.device:
-                self.device.close()
-                self.log("Relay HID connection closed.")
+                self.reset()
             self.status = Resource.Status.AVAILABLE
         except Exception as e:
             self.status = Resource.Status.ERROR
@@ -80,12 +82,12 @@ class Relay(Instrument):
 
     def read(self):
         """Return relay status, including per-channel ON/OFF states."""
-        base_status = super().read()
-        base_status.update({f"channel {i + 1}": self.channel_state[i].name for i in range(len(self.channel_state))})
-        return base_status
+        super().read()
+        self.actual_state.update({f"channel {i + 1}": self._channel_state[i].name for i in range(len(self._channel_state))})
+        return {'state':self.actual_state, 'diff':self.diff()}
 
     # ---------- Action ----------
-    def update(self, relay_num: int, state: State_Relay):
+    def update(self, relay_num: int, state: State_Relay | int):
         """
         Turn a specific relay channel ON or OFF.
 
@@ -96,13 +98,16 @@ class Relay(Instrument):
         if self.status != Resource.Status.IN_USE:
             self.create()
 
+        if isinstance(state, int):
+            state = self.State_Relay(state)
+        
         try:
             if not (1 <= relay_num <= 8):
                 raise ValueError("Relay number must be between 1 and 8.")
 
             cmd = [0x00, 0xFF if state == Relay.State_Relay.ON else 0xFD, relay_num]
             self.device.send_feature_report(cmd)
-            self.channel_state[relay_num - 1] = state
+            self._channel_state[relay_num - 1] = state
             self.log(f"Relay {relay_num} -> {state.name} (Command: {cmd})")
 
             sleep(0.05)
@@ -110,18 +115,3 @@ class Relay(Instrument):
             self.status = Resource.Status.ERROR
             self.log(f"Failed to set relay {relay_num}: {e}", level=logging.ERROR)
             raise BufferError(f"Failed to toggle relay {relay_num}") from e
-
-
-# ----------------------------
-# Example usage
-# ----------------------------
-if __name__ == "__main__":
-    PATH = b'\\\\?\\HID#VID_16C0&PID_05DF#8&d39fb6d&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}'
-    relay = Relay(name="Relay", identifier=PATH)
-    relay.connect()
-
-    relay.action(1, Relay.State_Relay.ON)
-    sleep(2)
-    relay.action(1, Relay.State_Relay.OFF)
-
-    relay.disconnect()

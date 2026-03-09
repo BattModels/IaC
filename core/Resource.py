@@ -66,7 +66,6 @@ class Resource(ABC):
 
     # ---------- Terraform-style lifecycle ----------
 
-    @abstractmethod
     def create(self, config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Provision / connect the resource and bring it to the desired state.
@@ -74,7 +73,7 @@ class Resource(ABC):
         `config` is merged into desired_state; the resulting actual_state
         *must* be returned as a plain dict.
         """
-        raise NotImplementedError
+        self.status = Resource.Status.IN_USE
 
     def read(self) -> Dict[str, Any]:
         """Return the current actual_state as a plain dict."""
@@ -89,14 +88,14 @@ class Resource(ABC):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def delete(self) -> None:
         """Tear down / disconnect the resource."""
-        raise NotImplementedError
+        self.status = Resource.Status.AVAILABLE
 
     # ---------- Diff & serialization ----------
 
-    
+    def is_error(self):
+        return self.status == Resource.Status.ERROR
 
 
     def diff(self) -> Dict[str, Dict[str, Any]]:

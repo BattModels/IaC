@@ -47,9 +47,8 @@ class Potentiostat(Instrument):
                 return
 
         self.manager = pspyinstruments.InstrumentManager(new_data_callback=new_data_callback)
-        self.filename = os.path.join(current_dir, 'pspython', 'COND_Ch=2.psmethod')
-        self.method = pspyfiles.load_method_file(self.filename)
-
+        self.method = pspyfiles.load_method_file( os.path.join(current_dir, 'pspython', 'COND_Ch=2.psmethod'))
+        self.filename = None
 
     # ---------- Core Methods ----------
 
@@ -84,17 +83,6 @@ class Potentiostat(Instrument):
             self.filename = None
         except Exception as e:
             pass
-        if self.manager and self.instrument:
-            try:
-                success = self.manager.disconnect()
-                if success == 1:
-                    self.status = Resource.Status.AVAILABLE
-                    self.log(f"Disconnected from {self.instrument.name}")
-                else:
-                    raise RuntimeError("Error while disconnecting.")
-            except Exception as e:
-                self.status = Resource.Status.ERROR
-                self.log(f"Error during disconnect: {e}", level="ERROR")
         self.status = Resource.Status.AVAILABLE
 
     # ---------- Measurement Logic ----------

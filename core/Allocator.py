@@ -1,189 +1,213 @@
 import threading
 import time
 from queue import Queue
-from typing import Dict, Any, Optional
+from collections import defaultdict
+from typing import Dict, Any, Optional, List, Tuple
+
 from core.Resource import Resource
+try:
+    from ..procedures.Compiler import compile_experiment, run_experiment
+except Exception as e:
+    from procedures.Compiler import compile_experiment, run_experiment
 
 class Allocator:
     """
-    Thread-safe, FIFO-fair resource allocator.
-    Two cooperating threads:
-        1) intake_thread  → receives experiments and enqueues them
-        2) dispatch_thread → always checks HEAD of the queue only
+    Allocator that schedules experiments by *control module type*.
+
+    - One FIFO queue per module type (e.g., "clio", "other_module_type")
+    - Each module type has a dedicated dispatch loop thread
+    - Dispatch loop:
+        - Takes HEAD experiment of that type
+        - Allocates one AVAILABLE module instance of that type
+        - Runs the experiment DAG bound to that module instance
+        - Releases the module instance when done
+
+    Requirements on your resource graph:
+    - `resources` is a dict: module_instance_name -> module_obj
+    - module_obj has:
+        - .type_name (e.g., "clio")
+        - .status (Resource.Status.*)
+        - .equipment (iterable of device resources, each with .name)
+        - .endpoints (iterable of endpoint resources, each with .name)
     """
 
-    def __init__(self, resource_graph):
-        self.resource_graph = resource_graph   # full IaC tree
-        self.request_queue = Queue()           # FIFO experiment queue
-        self.running = True                    # stop flag
+    def __init__(
+        self,
+        resources: Dict[str, Any],
+        poll_interval_s: float = 0.05,
+    ):
+        self.resources = resources
+        self.poll_interval_s = poll_interval_s
 
-        self.lock = threading.Lock()           # protects resource state
-        self.active_experiments: Dict[str, Any] = {}  # exp_id → allocation info
+        # module_type -> FIFO queue of experiment specs
+        self.queues: Dict[str, Queue] = defaultdict(Queue)
 
-        # Background threads
-        self.intake_thread = threading.Thread(target=self._intake_loop, daemon=True)
-        self.dispatch_thread = threading.Thread(target=self._dispatch_loop, daemon=True)
+        # module_type -> dispatch thread
+        self.dispatch_threads: Dict[str, threading.Thread] = {}
 
-    # ----------------------------------------------------------------------
-    # External API: submit new experiment
-    # ----------------------------------------------------------------------
-    def submit_experiment(self, exp_spec: Dict[str, Any]):
-        """Called by user / agent to enqueue a new experiment."""
-        print(f"[Allocator] Received experiment request: {exp_spec['experiment_id']}")
-        self.request_queue.put(exp_spec)
+        # Protects:
+        # - module instance status transitions
+        # - dispatch thread creation
+        self.lock = threading.Lock()
 
-    # ----------------------------------------------------------------------
-    # Intake (simple loop to wait for new experiments)
-    # ----------------------------------------------------------------------
-    def _intake_loop(self):
-        """This loop exists in case we want to add pre-processing later."""
-        while self.running:
-            time.sleep(0.2)
+        self.running = True
 
-    # ----------------------------------------------------------------------
-    # Main dispatch loop (head-of-line scheduling)
-    # ----------------------------------------------------------------------
-    def _dispatch_loop(self):
+    # ------------------------------------------------------------------
+    # External API
+    # ------------------------------------------------------------------
+    def submit_experiment(self, exp_spec: Dict[str, Any]) -> None:
         """
-        Conservative backfilling:
-        - Always protect the HEAD job's required device type.
-        - Backfill ONLY with jobs that do NOT need that device type.
+        exp_spec must include:
+          - "experiment_id"
+          - "module" : module TYPE (recommended) OR module instance name (supported)
+        If exp_spec["module"] equals a module instance name in resources, we treat it
+        as an instance; otherwise treat it as a type.
         """
+        if "experiment_id" not in exp_spec:
+            raise KeyError("exp_spec missing required field: 'experiment_id'")
+        if "module" not in exp_spec:
+            raise KeyError("exp_spec missing required field: 'module'")
 
-        while self.running:
-            if self.request_queue.empty():
-                time.sleep(0.1)
-                continue
+        module_key = exp_spec["module"]
 
-            # --------------------------
-            # 1. HEAD OF LINE JOB
-            # --------------------------
-            queue_list = list(self.request_queue.queue)
-            head_spec = queue_list[0]
-            head_id = head_spec["experiment_id"]
-            head_group = head_spec["require_group"]
+        # Decide if exp_spec["module"] is an instance name or a type name
+        if module_key in self.resources:
+            # module_key is an instance name like "clio_1"
+            module_type = getattr(self.resources[module_key], "module_type", None)
+            if module_type is None:
+                raise AttributeError(f"Module instance '{module_key}' missing .module_type")
+        else:
+            # module_key is a module type like "clio"
+            module_type = module_key
 
-            print(f"[Allocator] Checking HEAD job {head_id} (group={head_group})")
+        self.queues[module_type].put(exp_spec)
 
-            # Try to allocate the head job
-            head_alloc = self._attempt_allocation(head_spec)
-
-            if head_alloc is not None:
-                # Head job can run NOW → run it
-                print(f"[Allocator] HEAD job {head_id} allocated (reserved resource is now free).")
-                self._pop_and_run(head_spec, head_alloc)
-                continue
-
-            # If head cannot run, we RESERVE its device type
-            print(f"[Allocator] HEAD job {head_id} cannot run. Reserving group '{head_group}'.")
-
-            # --------------------------
-            # 2. BACKFILL
-            # Only backfill jobs that DO NOT require the reserved group.
-            # --------------------------
-            backfilled = False
-
-            for spec in queue_list[1:]:
-                exp_id = spec["experiment_id"]
-                group = spec["require_group"]
-
-                # Skip jobs that might delay the head job
-                if group == head_group:
-                    print(f"[Allocator] Skipping {exp_id}: conflicts with HEAD reservation.")
-                    continue
-
-                # Only try jobs that use DIFFERENT resources
-                alloc = self._attempt_allocation(spec)
-
-                if alloc is not None:
-                    print(f"[Allocator] Backfilling safe job {exp_id} (no conflict with head).")
-                    self._pop_and_run(spec, alloc)
-                    backfilled = True
-                    break
-
-            if not backfilled:
-                print("[Allocator] No safe jobs to run. Waiting...")
-                time.sleep(0.5)
-
-    # ----------------------------------------------------------------------
-    # Resource allocation logic (chooses group)
-    # ----------------------------------------------------------------------
-    def _attempt_allocation(self, exp_spec):
-        required_group = exp_spec["require_group"]
-
+        # Ensure a dispatch thread exists for this module type
         with self.lock:
-            available = []
+            if module_type not in self.dispatch_threads:
+                t = threading.Thread(
+                    target=self._dispatch_loop,
+                    args=(module_type,),
+                    daemon=True,
+                )
+                self.dispatch_threads[module_type] = t
+                t.start()
 
-            # Scan the resource graph for ControlModule, Pump groups, etc.
-            for res_name, res_obj in self.resource_graph.items():
-
-                # Only match resources of the correct type (group)
-                if not hasattr(res_obj, "type_name"):
-                    continue
-
-                if res_obj.type_name != required_group:
-                    continue
-
-                # Check availability
-                if getattr(res_obj, "status", None).name == "AVAILABLE":
-                    available.append(res_obj)
-
-            if not available:
-                return None  # allocation impossible now
-
-            chosen = available[0]  # FIFO, simplest selection
-            chosen.status = Resource.Status.IN_USE
-            return chosen
-
-    # ----------------------------------------------------------------------
-    # Run experiment after allocation
-    # ----------------------------------------------------------------------
-    def _run_experiment(self, exp_spec, allocated_resource):
-        exp_id = exp_spec["experiment_id"]
-        print(f"[Executor] Running {exp_id} on resource group {allocated_resource.name}")
-
-        # TODO: call your TaskNode compiler + DAG runner here
-
-        time.sleep(1)  # placeholder simulation
-
-        # Mark resource free
-        with self.lock:
-            allocated_resource.status = Resource.Status.AVAILABLE
-
-        print(f"[Executor] Experiment {exp_id} completed — resource released.")
-
-    # ----------------------------------------------------------------------
-    # Start allocator threads
-    # ----------------------------------------------------------------------
-    def start(self):
-        print("[Allocator] Starting allocator threads...")
-        self.intake_thread.start()
-        self.dispatch_thread.start()
-
-    # ----------------------------------------------------------------------
-    # Stop allocator
-    # ----------------------------------------------------------------------
-    def stop(self):
+    def stop(self) -> None:
         self.running = False
-        print("[Allocator] Stopping...")
 
-        # ----------------------------------------------------------------------
-    # Utility: pop a specific experiment (not only head!)
-    # ----------------------------------------------------------------------
-    def _pop_and_run(self, exp_spec, allocated_resource):
-        """Remove the given experiment from the queue and start execution."""
+    # ------------------------------------------------------------------
+    # Dispatch logic
+    # ------------------------------------------------------------------
+    def _dispatch_loop(self, module_type: str) -> None:
+        """
+        Head-of-line, per-type FIFO:
+          - Only consider the HEAD experiment in this type queue.
+          - Run it as soon as a module instance of this type becomes available.
+        """
+        print('here')
+        q = self.queues[module_type]
+        while self.running:
+            if q.empty():
+                time.sleep(self.poll_interval_s)
+                continue
 
-        # Build a new queue WITHOUT this exp_spec
-        new_queue = Queue()
-        for item in list(self.request_queue.queue):
-            if item != exp_spec:
-                new_queue.put(item)
-        self.request_queue = new_queue
+            exp_spec = q.queue[0]  # peek head
+            pick = self._try_allocate_module(module_type)
+            if pick is None:
+                time.sleep(self.poll_interval_s)
+                continue
+            instance_name, instance_obj = pick
+            print(f"Picked: {instance_obj.status}")
+            instance_obj.create()
+            # Pop now that we have reserved a module instance
+            q.get()
+            # Run experiment in background
+            threading.Thread(
+                target=self._run_on_instance,
+                args=(exp_spec, instance_name, instance_obj),
+                daemon=True,
+            ).start()
 
-        # Launch experiment in a new thread
-        t = threading.Thread(
-            target=self._run_experiment,
-            args=(exp_spec, allocated_resource),
-            daemon=True
-        )
-        t.start()
+            time.sleep(1)
+
+    def _try_allocate_module(self, module_type: str) -> Optional[Tuple[str, Any]]:
+        """
+        Find an AVAILABLE module instance matching module_type and reserve it (IN_USE).
+        """
+        with self.lock:
+            for instance_name, module_obj in self.resources.items():
+                if getattr(module_obj, "module_type", None) != module_type:
+                    continue
+                if getattr(module_obj, "status", None) == Resource.Status.AVAILABLE:
+                    thread_id = threading.get_ident()
+                    print(f"Running in thread ID: {thread_id}")
+                    module_obj.status = Resource.Status.IN_USE
+                    return instance_name, module_obj
+        return None
+
+    # ------------------------------------------------------------------
+    # Execution
+    # ------------------------------------------------------------------
+    def _run_on_instance(self, exp_spec: Dict[str, Any], instance_name: str, instance_obj: Any) -> None:
+        exp_id = exp_spec.get("experiment_id", "<unknown>")
+        try:
+            # Bind experiment to the chosen instance.
+            # Your compiler currently does: resources[spec["module"]] to find the module object.
+            # So we create a shallow copy of resources and map the instance name to the instance_obj.
+            # Then we rewrite exp_spec["module"] to be the instance_name.
+            bound_spec = dict(exp_spec)
+            for current in bound_spec['tasks']:
+                try:
+                    if current['resource'] == bound_spec["module"]:
+                        current['resource'] = instance_name
+                except Exception as e:
+                    pass
+            bound_spec["module"] = instance_name
+            # Compile & run
+            task_nodes = self.compile_experiment_from_spec(bound_spec)
+            run_experiment(task_nodes)
+
+        except Exception as e:
+            # IMPORTANT: you may want to trigger a cleanup DAG here
+            # (e.g., stop pumps, set relays OFF, delete created resources)
+            print(f"[Allocator] Experiment {exp_id} failed on {instance_name}: {e}")
+            raise e
+
+    def compile_experiment_from_spec(self, bound_spec: Dict[str, Any]):
+        """
+        Your existing compiler signature is:
+          compile_experiment(json_path, resources)
+
+        But now we often have a dict spec in memory.
+        This helper supports either:
+          - bound_spec has "json_path" -> call compiler(json_path, resources)
+          - otherwise compile from dict by writing temp file (simple & robust),
+            OR you can modify your compiler to accept a dict directly.
+
+        For minimal changes, we support both.
+        """
+
+        return compile_experiment(bound_spec, self.resources)
+
+    def snapshot_queues(self) -> Dict[str, Any]:
+        """
+        Return a GUI-safe snapshot of all queues + which module instances are busy.
+        No mutation; shallow copies only.
+        """
+        with self.lock:
+            queues = {}
+            for module_type, q in self.queues.items():
+                # Copy the underlying deque safely enough for GUI polling.
+                items = list(q.queue)
+                queues[module_type] = [
+                    {
+                        "experiment_id": spec.get("experiment_id"),
+                        "module_request": spec.get("module"),
+                        "n_tasks": len(spec.get("tasks", [])),
+                    }
+                    for spec in items
+                ]
+
+
+        return {"queues": queues}

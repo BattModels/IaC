@@ -13,26 +13,17 @@ class ControlModule(Resource):
     """
 
 
-    def __init__(self, name, type_name, id, status=Resource.Status.AVAILABLE, **kwargs):
+    def __init__(self, name, type_name, module_type, id, status=Resource.Status.AVAILABLE, **kwargs):
         super().__init__(name, type_name=type_name, id=id)
         self.status = status
+        self.module_type = module_type
         self.endpoints = []
         self.equipment = []
 
-    # -------- Terraform-style lifecycle -------- #
-    def create(self, config=None):
-        return {
-            "id": self.id,
-            "endpoint_count": len(self.endpoints),
-            "equipment_count": len(self.equipment),
-        }
 
     def update(self, config):
         return self.read()
 
-    def delete(self):
-        # Nothing to delete — virtual construct
-        pass
 
     def __repr__(self):
         return f"<ControlModule name={self.name}, id={self.id}>"

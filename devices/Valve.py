@@ -18,11 +18,14 @@ class Valve(Instrument):
     def __init__(self, name: str, id, identifier: int, type_name, baud_rate: int = 9600):
         super().__init__(name=name, id=id, connection_type=ConnectionType.SERIAL, type_name=type_name,
                          identifier=identifier)
-        self.baud_rate = baud_rate
-        self.ser = serial.Serial(self.comm_port, self.baud_rate, timeout=1)
-        self._go_to_position(1)
-        self.desired_state['position'] = 1
-        self.lock = False
+        try:
+            self.baud_rate = baud_rate
+            self.ser = serial.Serial(self.comm_port, self.baud_rate, timeout=1)
+            self._go_to_position(1)
+            self.desired_state['position'] = 1
+            self.lock = False
+        except Exception as e:
+            self.update_status(Resource.Status.ERROR)
 
     # --------------------------
     # Connection Methods
@@ -71,7 +74,7 @@ class Valve(Instrument):
         while self.lock:
             time.sleep(0.001)
         self.lock = True
-        self.actual_state = super().read()
+        super().read()
         self.actual_state['position'] = self._get_current_position()
         self.lock = False
         return {'state':self.actual_state, 'diff':self.diff()}
@@ -95,11 +98,3 @@ class Valve(Instrument):
         command = f"GO{dest}\r"
         self.ser.write(command.encode())
         self.log(f"Sent command to move valve to position {dest}.")
-
-    def read(self):
-        """Extend base status with valve-specific info."""
-        base_status = super().read()
-        base_status.update({
-            "position": self.position,
-        })
-        return base_status

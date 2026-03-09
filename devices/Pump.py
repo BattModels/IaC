@@ -1,9 +1,8 @@
 import serial
 import time
-import logging
 import threading
 from enum import Enum, auto
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from core.Instrument import Instrument, ConnectionType
 from core.Resource import Resource
@@ -17,6 +16,7 @@ baud_rate_map = {1200: 1, 2400: 2, 4800: 3, 9600: 4, 19200: 5, 38400: 6}
 @register_resource("pump")
 class Pump(Instrument):
     ADJ = 0.143
+
     # ================= ENUMS =================
     class PumpMode(Enum):
         SET_ROTATION_SPEED = auto()
@@ -49,19 +49,22 @@ class Pump(Instrument):
             connection_type=ConnectionType.SERIAL,
             identifier=identifier,
         )
-        self.desired_state['flow_rate'] = 0
+
+        self.desired_state["flow_rate"] = 0
         self.baud_rate = baud_rate
-        self.lock = False
+        self._lock = threading.Lock()
+
         try:
             self.serial_conn = serial.Serial(self.comm_port, self.baud_rate, timeout=1)
         except Exception as e:
             print(e)
             self.update_status(Resource.Status.ERROR)
-        # Controller state
+
         self.remaining_time = 0
         self._stop_event = threading.Event()
-        self._control_thread = threading.Thread(target=self._control_loop, daemon=True)
-
+        self._control_thread = threading.Thread(
+            target=self._control_loop, daemon=True
+        )
         self._control_thread.start()
 
     # ================= CONNECTION =================
@@ -72,64 +75,92 @@ class Pump(Instrument):
     def delete(self) -> None:
         self._stop_event.set()
         self._connected = False
+        self._send_stop()
         self.update_status(Resource.Status.AVAILABLE)
 
-    # ================= UPDATE (Terraform entry point) =================
+    # ================= UPDATE =================
     def update(self, flow_rate, volume, direction) -> None:
-        while self.lock:
-            time.sleep(0.001)
-        self.lock = True
-        self.desired_state['direction'] = Pump.State2(direction)
-        self.lock = False
+        with self._lock:
+            self.desired_state["direction"] = Pump.State2(direction)
+
         self.remaining_time = volume / flow_rate * 60
-        while self.lock:
-            time.sleep(0.001)
-        self.lock = True
-        self.desired_state['flow_rate'] = flow_rate
-        print(self.diff())
-        self.lock = False
-        #time.sleep(self.remaining_time)
 
-    # ================= CONTROLLER LOOP =================
+        with self._lock:
+            self.desired_state["flow_rate"] = flow_rate
+
+        time.sleep(self.remaining_time)
+
+    # ================= CONTROL LOOP =================
     def _control_loop(self):
-
         while True:
-            if self.desired_state['flow_rate'] > 0:
+            if self.desired_state["flow_rate"] > 0:
                 now = time.time()
-                self.desired_state['state1'] = Pump.State1.START_PUMP
-                self.desired_state['finish_time'] = now + self.remaining_time
-                self.actual_state['finish_time'] = now + self.remaining_time
 
-                self._send_start(self.desired_state['flow_rate'], self.desired_state['direction'])
+                self.desired_state["state1"] = Pump.State1.START_PUMP
+                self.desired_state["finish_time"] = now + self.remaining_time
+                self.actual_state["finish_time"] = now + self.remaining_time
+
+                with self._lock:
+                    self._send_start(
+                        self.desired_state["flow_rate"],
+                        self.desired_state["direction"],
+                    )
+
                 time.sleep(self.remaining_time - Pump.ADJ)
-                self._send_stop()
-                self.desired_state['state1'] = Pump.State1.STOP_PUMP
-                self.desired_state['flow_rate'] = 0
+                with self._lock:
+                    self._send_stop()
+                    self._send_stop()
 
-            
+                self.desired_state["state1"] = Pump.State1.STOP_PUMP
+                self.desired_state["flow_rate"] = 0
 
-    # ================= READ (observable state) =================
+    # ================= READ =================
     def read(self) -> Dict[str, Any]:
-        while self.lock:
-            time.sleep(0.001)
-        self.lock = True
-        while True:
-            try:
-                rotation_speed_bytes = self._send_command(Pump.PumpMode.READ_ROTATION_SPEED)
-                flow_rate_bytes = [0]
-                while flow_rate_bytes[0] != 11:
-                    flow_rate_bytes = list(self._send_command(Pump.PumpMode.READ_FLOW_RATE))
-                flow_rate_bytes = [255 - i for i in flow_rate_bytes]
-                flow_rate = flow_rate_bytes[5] * 32768 + flow_rate_bytes[6] * 128 + flow_rate_bytes[7] / 2 if flow_rate_bytes[8] > 0 else 0
-                self.actual_state.update({'status':self.status, 'flow_rate':flow_rate / 1E6, 'state1':Pump.State1(flow_rate_bytes[8] / 2), 'direction':Pump.State2(flow_rate_bytes[9] / 2)})
-                result = super().read()
-                result['state'] = self.actual_state
-                print(flow_rate_bytes)
-                self.lock = False
-                return result
-            except Exception as e:
-                result = {'state':len(flow_rate_bytes)}
-        
+        with self._lock:
+            while True:
+                try:
+                    rotation_speed_bytes = self._send_command(
+                        Pump.PumpMode.READ_ROTATION_SPEED
+                    )
+
+                    flow_rate_bytes = [0]
+                    while flow_rate_bytes[0] != 11:
+                        flow_rate_bytes = list(
+                            self._send_command(Pump.PumpMode.READ_FLOW_RATE)
+                        )
+
+                    flow_rate_bytes = [255 - i for i in flow_rate_bytes]
+
+                    flow_rate = (
+                        flow_rate_bytes[5] * 32768
+                        + flow_rate_bytes[6] * 128
+                        + flow_rate_bytes[7] / 2
+                        if flow_rate_bytes[8] > 0
+                        else 0
+                    )
+
+                    # ---- State decoding (unchanged logic) ----
+                    state1 = Pump.State1(flow_rate_bytes[8] // 2)
+                    direction = Pump.State2(flow_rate_bytes[9] // 2)
+
+                    self.actual_state.update(
+                        {
+                            "status": self.status,
+                            "flow_rate": flow_rate / 1e6,
+                            "state1": state1,
+                            "direction": direction,
+                        }
+                    )
+
+                    result = super().read()
+                    result["state"] = self.actual_state
+
+                    print(result)
+                    return result
+
+                except Exception:
+                    self.update_status(Resource.Status.ERROR)
+                    return {"state": {"status": self.status}}
 
     # ================= LOW LEVEL =================
     def _send_start(self, flow_rate, direction):
@@ -153,7 +184,7 @@ class Pump(Instrument):
         flow_rate=0,
         direction=State2.CLOCKWISE,
         start=False,
-    ) -> None:
+    ):
         if not self.serial_conn or not self.serial_conn.is_open:
             self.create()
 
@@ -161,27 +192,33 @@ class Pump(Instrument):
 
         for _ in range(RETRY_LIMIT):
             try:
-                cmd = self._generate_command(mode, state1, direction, flow_rate * 1e6)
-                #print(cmd)
+                cmd = self._generate_command(
+                    mode, state1, direction, flow_rate * 1e6
+                )
+                self.serial_conn.reset_input_buffer()
                 self.serial_conn.write(cmd)
+
                 if mode == Pump.PumpMode.READ_ROTATION_SPEED:
                     return self.serial_conn.read(8)
                 elif mode == Pump.PumpMode.READ_FLOW_RATE:
                     return self.serial_conn.read(10)
                 return
-            except Exception as exc:
-                print(exc)
+            except Exception:
                 time.sleep(1)
 
         raise BufferError("Pump command failed")
 
+    # ================= COMMAND BUILDING =================
     def _generate_command(self, mode, state1=None, state2=None, value=None):
         pdu = self._get_pdu(mode)
+
         if mode == Pump.PumpMode.SET_FLOW_RATE:
             pdu += self._num_to_bytes(value, 4) + [state1.value, state2.value]
         elif mode == Pump.PumpMode.SET_ROTATION_SPEED:
             pdu += self._num_to_bytes(value, 2) + [state1.value, state2.value]
+
         fcs = self._xor_bytes([self.identifier] + pdu)
+
         return bytearray([233, self.identifier] + pdu + [fcs])
 
     def _get_pdu(self, mode):

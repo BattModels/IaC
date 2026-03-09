@@ -1,0 +1,622 @@
+{
+    "experiment_id": "20260308_193455",
+    "resources": [
+        "pump_1",
+        "pump_2",
+        "valve",
+        "relay_1",
+        "relay_2",
+        "balance",
+        "palmsens4"
+    ],
+    "module": "clio",
+    "tasks": [
+        {
+            "task_id": 0,
+            "resource": "clio",
+            "action": "create",
+            "args": [],
+            "kwargs": {},
+            "depends_on": []
+        },
+        {
+            "task_id": 1,
+            "resource": "pump_1",
+            "action": "create",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                0
+            ]
+        },
+        {
+            "task_id": 2,
+            "resource": "pump_2",
+            "action": "create",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                0
+            ]
+        },
+        {
+            "task_id": 3,
+            "resource": "relay_1",
+            "action": "create",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                0
+            ]
+        },
+        {
+            "task_id": 4,
+            "resource": "relay_2",
+            "action": "create",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                0
+            ]
+        },
+        {
+            "task_id": 5,
+            "resource": "valve",
+            "action": "create",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                0
+            ]
+        },
+        {
+            "task_id": 6,
+            "resource": "balance",
+            "action": "create",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                0
+            ]
+        },
+        {
+            "task_id": 7,
+            "resource": "palmsens4",
+            "action": "create",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                0
+            ]
+        },
+        {
+            "task_id": 8,
+            "resource": "valve",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "dest": 8
+            },
+            "depends_on": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            ]
+        },
+        {
+            "task_id": 9,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 7,
+                "state": 1
+            },
+            "depends_on": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            ]
+        },
+        {
+            "task_id": 10,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 8,
+                "state": 1
+            },
+            "depends_on": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            ]
+        },
+        {
+            "task_id": 11,
+            "resource": "pump_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "flow_rate": 5,
+                "volume": 1.15,
+                "direction": 1
+            },
+            "depends_on": [
+                8,
+                9,
+                10
+            ]
+        },
+        {
+            "task_id": 12,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 7,
+                "state": 0
+            },
+            "depends_on": [
+                11
+            ]
+        },
+        {
+            "task_id": 13,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 8,
+                "state": 0
+            },
+            "depends_on": [
+                11
+            ]
+        },
+        {
+            "task_id": 14,
+            "resource": "pump_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "flow_rate": 5,
+                "volume": 0.9999900050125313,
+                "direction": 1
+            },
+            "depends_on": [
+                12,
+                13
+            ]
+        },
+        {
+            "task_id": 15,
+            "resource": "valve",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "dest": 10
+            },
+            "depends_on": [
+                14
+            ]
+        },
+        {
+            "task_id": 16,
+            "resource": "pump_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "flow_rate": 5,
+                "volume": 1.15,
+                "direction": 0
+            },
+            "depends_on": [
+                15
+            ]
+        },
+        {
+            "task_id": 17,
+            "resource": "relay_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 3,
+                "state": 1
+            },
+            "depends_on": [
+                16
+            ]
+        },
+        {
+            "task_id": 18,
+            "resource": "relay_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 4,
+                "state": 1
+            },
+            "depends_on": [
+                16
+            ]
+        },
+        {
+            "task_id": 19,
+            "wait": 10,
+            "depends_on": [
+                17,
+                18
+            ]
+        },
+        {
+            "task_id": 20,
+            "resource": "relay_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 3,
+                "state": 0
+            },
+            "depends_on": [
+                19
+            ]
+        },
+        {
+            "task_id": 21,
+            "resource": "relay_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 4,
+                "state": 0
+            },
+            "depends_on": [
+                19
+            ]
+        },
+        {
+            "task_id": 22,
+            "wait": 30,
+            "depends_on": [
+                20,
+                21
+            ]
+        },
+        {
+            "task_id": 23,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 1,
+                "state": 1
+            },
+            "depends_on": [
+                22
+            ]
+        },
+        {
+            "task_id": 24,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 2,
+                "state": 1
+            },
+            "depends_on": [
+                22
+            ]
+        },
+        {
+            "task_id": 25,
+            "resource": "pump_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "flow_rate": 4,
+                "volume": 0.7,
+                "direction": 1
+            },
+            "depends_on": [
+                23,
+                24
+            ]
+        },
+        {
+            "task_id": 26,
+            "resource": "balance",
+            "action": "read",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                25
+            ]
+        },
+        {
+            "task_id": 27,
+            "resource": "pump_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "flow_rate": 4,
+                "volume": 0.5,
+                "direction": 1
+            },
+            "depends_on": [
+                26
+            ]
+        },
+        {
+            "task_id": 28,
+            "resource": "balance",
+            "action": "read",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                27
+            ]
+        },
+        {
+            "task_id": 29,
+            "resource": "balance",
+            "action": "delete",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                28
+            ]
+        },
+        {
+            "task_id": 30,
+            "resource": "pump_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "flow_rate": 4,
+                "volume": 0.9099999999999999,
+                "direction": 0
+            },
+            "depends_on": [
+                28
+            ]
+        },
+        {
+            "task_id": 31,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 1,
+                "state": 0
+            },
+            "depends_on": [
+                30
+            ]
+        },
+        {
+            "task_id": 32,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 2,
+                "state": 0
+            },
+            "depends_on": [
+                30
+            ]
+        },
+        {
+            "task_id": 33,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 3,
+                "state": 1
+            },
+            "depends_on": [
+                31,
+                32
+            ]
+        },
+        {
+            "task_id": 34,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 4,
+                "state": 1
+            },
+            "depends_on": [
+                31,
+                32
+            ]
+        },
+        {
+            "task_id": 35,
+            "resource": "pump_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "flow_rate": 5,
+                "volume": 0.75,
+                "direction": 1
+            },
+            "depends_on": [
+                33,
+                34
+            ]
+        },
+        {
+            "task_id": 36,
+            "resource": "palmsens4",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "eac": 0.25,
+                "freq_min": 20000.0,
+                "freq_max": 592000.0,
+                "n_freq": 10
+            },
+            "depends_on": [
+                35
+            ]
+        },
+        {
+            "task_id": 37,
+            "resource": "palmsens4",
+            "action": "read",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                36
+            ]
+        },
+        {
+            "task_id": 38,
+            "resource": "palmsens4",
+            "action": "delete",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                37
+            ]
+        },
+        {
+            "task_id": 39,
+            "resource": "pump_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "flow_rate": 4,
+                "volume": 0.9750000000000001,
+                "direction": 0
+            },
+            "depends_on": [
+                37
+            ]
+        },
+        {
+            "task_id": 40,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 3,
+                "state": 0
+            },
+            "depends_on": [
+                39
+            ]
+        },
+        {
+            "task_id": 41,
+            "resource": "relay_1",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "relay_num": 4,
+                "state": 0
+            },
+            "depends_on": [
+                39
+            ]
+        },
+        {
+            "task_id": 42,
+            "resource": "pump_2",
+            "action": "update",
+            "args": [],
+            "kwargs": {
+                "flow_rate": 5,
+                "volume": 1.5,
+                "direction": 0
+            },
+            "depends_on": [
+                40,
+                41
+            ]
+        },
+        {
+            "task_id": 43,
+            "resource": "pump_1",
+            "action": "delete",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                42
+            ]
+        },
+        {
+            "task_id": 44,
+            "resource": "pump_2",
+            "action": "delete",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                42
+            ]
+        },
+        {
+            "task_id": 45,
+            "resource": "relay_1",
+            "action": "delete",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                42
+            ]
+        },
+        {
+            "task_id": 46,
+            "resource": "relay_2",
+            "action": "delete",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                42
+            ]
+        },
+        {
+            "task_id": 47,
+            "resource": "valve",
+            "action": "delete",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                42
+            ]
+        },
+        {
+            "task_id": 48,
+            "resource": "clio",
+            "action": "delete",
+            "args": [],
+            "kwargs": {},
+            "depends_on": [
+                43,
+                44,
+                45,
+                46,
+                47
+            ]
+        }
+    ]
+}

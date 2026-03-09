@@ -60,7 +60,6 @@ def construct_resource(name: str, spec: Dict[str, Any]) -> Resource:
 
     if "type_name" not in spec:
         raise ValueError(f"Resource '{name}' missing 'type_name' field")
-
     type_name = spec["type_name"]
     if type_name not in RESOURCE_TYPES:
         raise ValueError(f"Unknown resource type '{type_name}'")
